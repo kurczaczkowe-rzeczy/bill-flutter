@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:paragony/model/new_product.dart';
 import 'package:paragony/model/shopping_list.dart';
+import 'package:paragony/model/unit.dart';
 import 'package:paragony/services/db_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -39,9 +41,7 @@ class MyApp extends StatelessWidget {
           alignment: Alignment.center,
           child: TextButton(
             child: Text('click'),
-            onPressed: () async {
-              await DBService().createShoppingList("Nowa lista zakupów", DateTime.now());
-              await DBService().getShoppingLists();
+            onPressed: ()  {
             },
           ),
         ),

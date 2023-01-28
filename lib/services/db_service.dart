@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:intl/intl.dart';
 import 'package:paragony/model/category.dart';
+import 'package:paragony/model/new_product.dart';
 import 'package:paragony/model/shopping_list.dart';
 import 'package:paragony/model/shopping_lists.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -42,6 +43,10 @@ class DBService {
   Future<void> toggleProductInCart(int productId) async {
     return await supabase
         .rpc('toggle_product_in_cart', params: {'id_of_product': productId});
+  }
+
+  Future<void> createProduct(NewProduct product) async {
+    return await supabase.rpc('create_product', params: product.toJson());
   }
 }
 
