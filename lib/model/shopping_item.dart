@@ -2,8 +2,8 @@ import 'package:paragony/model/unit.dart';
 
 class ShoppingItem {
   int id;
-  String createAt;
-  num? quantity;
+  DateTime createAt;
+  num quantity;
   Unit unit;
   String name;
   bool inCart;
@@ -22,13 +22,13 @@ class ShoppingItem {
   });
 
   static ShoppingItem fromJson(Map<String, dynamic> json) {
-    String unitName = json['unit'];
-    Unit unit = Unit.getValue(unitName);
+    Unit unit = Unit.getValue(json['unit'] as String);
+    DateTime createAt = DateTime.parse(json['created_at'] as String);
 
     return ShoppingItem(
         id: json['product_id'] as int,
-        createAt: json['created_at'] as String,
-        quantity: json['quantity'] as num?,
+        createAt: createAt,
+        quantity: json['quantity'] as num,
         unit: unit,
         name: json['product_name'] as String,
         inCart: json['in_cart'] as bool,

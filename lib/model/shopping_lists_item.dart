@@ -1,7 +1,7 @@
 class ShoppingListsItem {
   int id;
-  String createAt;
-  String date;
+  DateTime createAt;
+  DateTime date;
   String name;
   int productsAmount;
 
@@ -13,12 +13,16 @@ class ShoppingListsItem {
     required this.productsAmount,
 });
 
-  static ShoppingListsItem fromJson(Map<String, dynamic> json) =>
-      ShoppingListsItem(
-          id: json['id'] as int,
-          createAt: json['created_at'] as String,
-          date: json['date'] as String,
-          name: json['name'] as String,
-          productsAmount: json['products_amount'] as int
-      );
+  static ShoppingListsItem fromJson(Map<String, dynamic> json) {
+    DateTime createAt = DateTime.parse(json['created_at'] as String);
+    DateTime date = DateTime.parse(json['date'] as String);
+
+    return ShoppingListsItem(
+        id: json['id'] as int,
+        createAt: createAt,
+        date: date,
+        name: json['name'] as String,
+        productsAmount: json['products_amount'] as int
+    );
+  }
 }

@@ -30,7 +30,11 @@ class DBService {
   Future<ShoppingLists> getShoppingLists() async {
     final response = await supabase.rpc('get_shopping_lists').select();
 
-    return ShoppingLists.fromJson(response);
+    ShoppingLists elem = ShoppingLists.fromJson(response);
+    elem.list.forEach((element) {
+      log('elem: $element');
+    });
+    return elem;
   }
 
   Future<void> toggleProductInCart(int productId) async {

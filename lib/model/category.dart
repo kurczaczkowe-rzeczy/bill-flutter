@@ -4,7 +4,7 @@ import 'package:paragony/shared/extentions.dart';
 
 class Category{
   int id;
-  String createdAt;
+  DateTime createdAt;
   String name;
   Color color;
 
@@ -12,10 +12,11 @@ class Category{
 
   static Category fromJson(Map<String, dynamic> json) {
     String color = '#${json['color']}';
+    DateTime createdAt = DateTime.parse(json['created_at'] as String);
 
     return Category(
         id: json['id'] as int,
-        createdAt: json['created_at'] as String,
+        createdAt: createdAt,
         name: json['name'] as String,
         color: color.toColor()
     );
