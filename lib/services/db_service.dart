@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:paragony/model/category.dart';
 import 'package:paragony/model/shopping_list.dart';
+import 'package:paragony/model/shopping_lists.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DBService {
@@ -21,8 +24,13 @@ class DBService {
     final response = await supabase
         .rpc('get_shopping_list', params: {'shopping_list_id': id});
 
-    ShoppingList elem = ShoppingList.fromJson(response);
-    return elem;
+    return ShoppingList.fromJson(response);
+  }
+
+  Future<ShoppingLists> getShoppingLists() async {
+    final response = await supabase.rpc('get_shopping_lists').select();
+
+    return ShoppingLists.fromJson(response);
   }
 
   Future<void> toggleProductInCart(int productId) async {
