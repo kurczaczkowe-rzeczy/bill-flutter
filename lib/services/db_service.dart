@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:intl/intl.dart';
 import 'package:paragony/model/category.dart';
 import 'package:paragony/model/shopping_list.dart';
 import 'package:paragony/model/shopping_lists.dart';
@@ -30,11 +31,12 @@ class DBService {
   Future<ShoppingLists> getShoppingLists() async {
     final response = await supabase.rpc('get_shopping_lists').select();
 
-    ShoppingLists elem = ShoppingLists.fromJson(response);
-    elem.list.forEach((element) {
-      log('elem: $element');
-    });
-    return elem;
+    return ShoppingLists.fromJson(response);
+  }
+  
+  Future<void> createShoppingList(String name, DateTime date) async {
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    return await supabase.rpc('create_shopping_list', params: {'name': name, 'date': dateFormat.format(date)});
   }
 
   Future<void> toggleProductInCart(int productId) async {

@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
           child: TextButton(
             child: Text('click'),
             onPressed: () async {
+              await DBService().createShoppingList("Nowa lista zakupów", DateTime.now());
               await DBService().getShoppingLists();
             },
           ),
