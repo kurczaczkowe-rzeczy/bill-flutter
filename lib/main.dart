@@ -1,11 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:paragony/model/new_product.dart';
-import 'package:paragony/model/shopping_list.dart';
-import 'package:paragony/model/unit.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/screen/shoppingLists/shopping_lists.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -34,17 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Title'),
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          child: TextButton(
-            child: Text('click'),
-            onPressed: ()  {
-            },
-          ),
-        ),
+        body: SafeArea(child: ShoppingListsWidget())
       ),
     );
   }
