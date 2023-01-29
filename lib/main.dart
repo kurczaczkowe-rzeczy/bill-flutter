@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:paragony/screen/createShoppingList/create_shopping_list.dart';
 import 'package:paragony/screen/shoppingLists/shopping_lists.dart';
+import 'package:paragony/shared/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
@@ -28,9 +30,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Scaffold(
-        body: SafeArea(child: ShoppingListsWidget())
-      ),
+      routes: {
+        Routes.home: (context) => ShoppingListsWidget(),
+        Routes.createList: (context) => CreateShoppingList(),
+      },
     );
   }
 }

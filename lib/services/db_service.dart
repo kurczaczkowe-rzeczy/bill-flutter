@@ -5,6 +5,7 @@ import 'package:paragony/model/category.dart';
 import 'package:paragony/model/new_product.dart';
 import 'package:paragony/model/shopping_list.dart';
 import 'package:paragony/model/shopping_lists.dart';
+import 'package:paragony/model/shopping_lists_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DBService {
@@ -33,6 +34,12 @@ class DBService {
     final response = await supabase.rpc('get_shopping_lists').select();
 
     return ShoppingLists.fromJson(response);
+    return ShoppingLists(list: [
+      ShoppingListsItem(id: 0, createAt: DateTime.now(), date: DateTime.now(), name: "Nazwa listy", productsAmount: 5),
+      ShoppingListsItem(id: 1, createAt: DateTime.now(), date: DateTime.now(), name: "Nazwa listy 2", productsAmount: 5),
+      ShoppingListsItem(id: 3, createAt: DateTime.now(), date: DateTime.now(), name: "Nazwa listy 3", productsAmount: 0),
+      ShoppingListsItem(id: 4, createAt: DateTime.now(), date: DateTime.now(), name: "Zakupki", productsAmount: 8),
+    ]);
   }
   
   Future<void> createShoppingList(String name, DateTime date) async {
