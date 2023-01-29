@@ -49,7 +49,7 @@ class DBService {
 
   Future<void> toggleProductInCart(int productId) async {
     return await supabase
-        .rpc('toggle_product_in_cart', params: {'id_of_product': productId});
+        .rpc('toggle_product_in_cart', params: {'product_id': productId});
   }
 
   Future<void> createProduct(NewProduct product) async {
