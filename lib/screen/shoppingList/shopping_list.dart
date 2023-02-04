@@ -3,6 +3,8 @@ import 'package:group_list_view/group_list_view.dart';
 import 'package:paragony/model/model_category.dart';
 import 'package:paragony/model/shopping_item.dart';
 import 'package:paragony/model/shopping_list.dart';
+import 'package:paragony/screen/shoppingList/shopping_list_header.dart';
+import 'package:paragony/screen/shoppingList/shopping_list_item.dart';
 import 'package:paragony/services/db_service.dart';
 
 class ShoppingListWidget extends StatefulWidget {
@@ -16,6 +18,13 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   Future<ShoppingList> _list =
       Future.value(ShoppingList(productsGroupByCategory: {}));
   int listId = -1;
+
+  void _onProductClicked(int productId) async {
+    await DBService().toggleProductInCart(productId);
+    setState(() => {_list = DBService().getShoppingList(listId)});
+  }
+
+  void _onCategoryClicked(int categoryId) {}
 
   @override
   Widget build(BuildContext context) {
@@ -41,40 +50,14 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
               itemBuilder: (context, index) {
                 ShoppingItem item = shoppingList.productsGroupByCategory.values
                     .toList()[index.section][index.index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 16.0, horizontal: 30.0),
-                  child: Text(
-                    item.name,
-                    style: TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                );
+                return ShoppingListItemWidget(
+                    item: item, onPressed: _onProductClicked);
               },
               groupHeaderBuilder: (BuildContext context, int section) {
                 Category category =
                     shoppingList.productsGroupByCategory.keys.toList()[section];
-                return Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Container(
-                        width: 16.0,
-                        height: 16.0,
-                        decoration: BoxDecoration(
-                            color: category.color,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(4.0)),
-                      ),
-                    ),
-                    Text(
-                      category.name,
-                      style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w700),
-                    )
-                  ],
-                );
+                return ShoppingListHeaderWidget(
+                    category: category, onPressed: _onCategoryClicked);
               },
               separatorBuilder: (context, index) => Divider(
                   thickness: 1,

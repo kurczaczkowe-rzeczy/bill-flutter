@@ -23,81 +23,12 @@ class DBService {
   }
 
   Future<ShoppingList> getShoppingList(int id) async {
-    // if (id == -1) {
-    //   return ShoppingList(list: []);
-    // }
+    if (id == -1) {
+      return ShoppingList(productsGroupByCategory: {});
+    }
 
-    // final response = await supabase
-    //     .rpc('get_shopping_list', params: {'shopping_list_id': id});
-
-    List<dynamic> response = [
-      {"product_id":7,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Banan","in_cart":false,"category_id":4,"category_name":"Warzywa i owoce","category_color":"3DC753"},
-      {"product_id":8,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Banan 2","in_cart":false,"category_id":6,"category_name":"Warzywa i owoce","category_color":"3DC753"},
-      {"product_id":9,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko","in_cart":true,"category_id":4,"category_name":"Pieczywo","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":6,"category_name":"Pieczywo","category_color":"222222"},
-      {"product_id":9,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko","in_cart":true,"category_id":2,"category_name":"Pieczywo 1","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":2,"category_name":"Pieczywo 1","category_color":"222222"},
-      {"product_id":9,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko","in_cart":true,"category_id":1,"category_name":"Pieczywo 2","category_color":"222222"},
-      {"product_id":9,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko","in_cart":true,"category_id":1,"category_name":"Pieczywo 2","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":3,"category_name":"Pieczywo 3","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":3,"category_name":"Pieczywo 3","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":5,"category_name":"Pieczywo 4","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":5,"category_name":"Pieczywo 4","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":7,"category_name":"Pieczywo 5","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":7,"category_name":"Pieczywo 5","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":8,"category_name":"Pieczywo 8","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":8,"category_name":"Pieczywo 8","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":8,"category_name":"Pieczywo 8","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-      {"product_id":10,"created_at":"2023-01-31T15:45:42.286935","quantity":1,"unit":"KILOGRAM","product_name":"Jabłko2","in_cart":false,"category_id":9,"category_name":"Pieczywo 9","category_color":"222222"},
-    ];
-
-    log('response: $response');
+    final response = await supabase
+        .rpc('get_shopping_list', params: {'shopping_list_id': id});
 
     return ShoppingList.fromJson(response);
   }
