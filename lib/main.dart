@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:paragony/screen/createShoppingList/create_shopping_list.dart';
+import 'package:paragony/screen/shoppingList/shopping_list.dart';
 import 'package:paragony/screen/shoppingLists/shopping_lists.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
       title: 'Paragony',
       routes: {
         Routes.home: (context) => ShoppingListsWidget(),
-        Routes.createList: (context) => CreateShoppingList(),
+        Routes.createList: (context) => CreateShoppingListWidget(),
+        Routes.shoppingList: (context) => ShoppingListWidget(),
       },
     );
   }

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paragony/services/db_service.dart';
 
-class CreateShoppingList extends StatefulWidget {
-  const CreateShoppingList({Key? key}) : super(key: key);
+class CreateShoppingListWidget extends StatefulWidget {
+  const CreateShoppingListWidget({Key? key}) : super(key: key);
 
   @override
-  State<CreateShoppingList> createState() => _CreateShoppingListState();
+  State<CreateShoppingListWidget> createState() => _CreateShoppingListWidgetState();
 }
 
-class _CreateShoppingListState extends State<CreateShoppingList> {
+class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
   final _formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
 

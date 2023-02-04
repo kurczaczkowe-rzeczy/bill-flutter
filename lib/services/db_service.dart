@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:intl/intl.dart';
-import 'package:paragony/model/category.dart';
+import 'package:paragony/model/model_category.dart';
 import 'package:paragony/model/new_product.dart';
 import 'package:paragony/model/shopping_list.dart';
 import 'package:paragony/model/shopping_lists.dart';
-import 'package:paragony/model/shopping_lists_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DBService {
@@ -24,6 +23,10 @@ class DBService {
   }
 
   Future<ShoppingList> getShoppingList(int id) async {
+    if (id == -1) {
+      return ShoppingList(productsGroupByCategory: {});
+    }
+
     final response = await supabase
         .rpc('get_shopping_list', params: {'shopping_list_id': id});
 
@@ -33,18 +36,15 @@ class DBService {
   Future<ShoppingLists> getShoppingLists() async {
     final response = await supabase.rpc('get_shopping_lists').select();
 
+    log('response: $response');
+
     return ShoppingLists.fromJson(response);
-    return ShoppingLists(list: [
-      ShoppingListsItem(id: 0, createAt: DateTime.now(), date: DateTime.now(), name: "Nazwa listy", productsAmount: 5),
-      ShoppingListsItem(id: 1, createAt: DateTime.now(), date: DateTime.now(), name: "Nazwa listy 2", productsAmount: 5),
-      ShoppingListsItem(id: 3, createAt: DateTime.now(), date: DateTime.now(), name: "Nazwa listy 3", productsAmount: 0),
-      ShoppingListsItem(id: 4, createAt: DateTime.now(), date: DateTime.now(), name: "Zakupki", productsAmount: 8),
-    ]);
   }
-  
+
   Future<void> createShoppingList(String name, DateTime date) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
-    return await supabase.rpc('create_shopping_list', params: {'name': name, 'date': dateFormat.format(date)});
+    return await supabase.rpc('create_shopping_list',
+        params: {'name': name, 'date': dateFormat.format(date)});
   }
 
   Future<void> toggleProductInCart(int productId) async {
