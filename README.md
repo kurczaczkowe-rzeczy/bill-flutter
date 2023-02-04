@@ -2,6 +2,13 @@
 
 Aplikacja wspomagająca planowanie budżetu domowego
 
+## Start Steps
+
+Before start project copy ```.env.default``` file and past with name ```.env``` in same folder.
+
+Then you have to get anon key from https://app.supabase.com/project/woivvwosjzyyyveuzwuq/settings/api
+in Project API key section and past into ```API_KEY``` variable
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
