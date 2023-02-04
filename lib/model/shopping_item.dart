@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:paragony/model/unit.dart';
+import 'package:paragony/shared/extentions.dart';
 
 class ShoppingItem {
   int id;
@@ -9,6 +11,7 @@ class ShoppingItem {
   bool inCart;
   int categoryId;
   String categoryName;
+  Color categoryColor;
 
   ShoppingItem({
     required this.id,
@@ -19,10 +22,12 @@ class ShoppingItem {
     required this.inCart,
     required this.categoryId,
     required this.categoryName,
+    required this.categoryColor,
   });
 
   static ShoppingItem fromJson(Map<String, dynamic> json) {
     Unit unit = Unit.getValue(json['unit'] as String);
+    String color = '#${json['category_color']}';
     DateTime createAt = DateTime.parse(json['created_at'] as String);
 
     return ShoppingItem(
@@ -33,6 +38,7 @@ class ShoppingItem {
         name: json['product_name'] as String,
         inCart: json['in_cart'] as bool,
         categoryId: json['category_id'] as int,
-        categoryName: json['category_name'] as String);
+        categoryName: json['category_name'] as String,
+        categoryColor: color.toColor());
   }
 }
