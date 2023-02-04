@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:paragony/model/shopping_lists.dart';
 import 'package:paragony/model/shopping_lists_item.dart';
@@ -25,6 +23,14 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
     if (isCreateSuccess) {
       setState(() => {_list = DBService().getShoppingLists()});
     }
+  }
+
+  void _onShoppingListClicked(int listID) {
+    Navigator.pushNamed(
+      context,
+      Routes.shoppingList,
+      arguments: listID,
+    );
   }
 
   @override
@@ -55,7 +61,12 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
             body: ListView.builder(
                 itemCount: list.length,
                 itemBuilder: (context, index) {
-                  return ShoppingListsItemWidget(item: list[index]);
+                  ShoppingListsItem item = list[index];
+                  return ShoppingListsItemWidget(
+                      item: item,
+                      onPressed: (listId) {
+                        _onShoppingListClicked(listId);
+                      });
                 }),
           );
         } else {
