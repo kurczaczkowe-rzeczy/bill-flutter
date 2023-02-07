@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:group_list_view/group_list_view.dart';
-import 'package:paragony/model/model_category.dart';
-import 'package:paragony/model/shopping_item.dart';
-import 'package:paragony/model/shopping_list.dart';
+import 'package:paragony/model/domain/model_category.dart';
+import 'package:paragony/model/domain/shopping_item.dart';
+import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_header.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_item.dart';
 import 'package:paragony/services/db_service.dart';

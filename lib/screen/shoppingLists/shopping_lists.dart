@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:paragony/model/shopping_lists.dart';
-import 'package:paragony/model/shopping_lists_item.dart';
+import 'package:paragony/model/domain/shopping_lists.dart';
+import 'package:paragony/model/domain/shopping_lists_item.dart';
 import 'package:paragony/screen/shoppingLists/shopping_lists_item.dart';
 import 'package:paragony/services/db_service.dart';
 import 'package:paragony/shared/constants.dart';

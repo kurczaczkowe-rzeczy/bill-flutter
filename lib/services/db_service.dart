@@ -1,10 +1,18 @@
 import 'dart:developer';
 
+import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
-import 'package:paragony/model/model_category.dart';
-import 'package:paragony/model/new_product.dart';
-import 'package:paragony/model/shopping_list.dart';
-import 'package:paragony/model/shopping_lists.dart';
+import 'package:paragony/model/dto/shopping_list_item_response.dart';
+import 'package:paragony/model/dto/shopping_list_response.dart';
+import 'package:paragony/model/dto/shopping_lists_response.dart';
+import 'package:paragony/model/domain/model_category.dart';
+import 'package:paragony/model/domain/new_product.dart';
+import 'package:paragony/model/domain/shopping_item.dart';
+import 'package:paragony/model/domain/shopping_list.dart';
+import 'package:paragony/model/domain/shopping_lists.dart';
+import 'package:paragony/model/domain/shopping_lists_item.dart';
+import 'package:paragony/model/domain/unit.dart';
+import 'package:paragony/shared/extentions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DBService {
@@ -30,15 +38,43 @@ class DBService {
     final response = await supabase
         .rpc('get_shopping_list', params: {'shopping_list_id': id});
 
-    return ShoppingList.fromJson(response);
+    Map<Category, List<ShoppingItem>> productsGroupByCategory = groupBy(
+            ShoppingListResponse.fromJson(response).result,
+            (ShoppingListItemResponse response) => response.category.id)
+        .map((key, value) => MapEntry(
+            Category(
+                name: value.first.category.name,
+                color: value.first.category.color.toColor()),
+            value
+                .map((element) => ShoppingItem(
+                    id: element.id,
+                    createAt: element.createdAt,
+                    quantity: element.quantity,
+                    unit: element.unit,
+                    name: element.name,
+                    inCart: element.inCart,
+                    categoryId: element.category.id,
+                    categoryName: element.category.name,
+                    categoryColor: element.category.color.toColor()))
+                .toList()));
+
+    return ShoppingList(productsGroupByCategory: productsGroupByCategory);
   }
 
   Future<ShoppingLists> getShoppingLists() async {
     final response = await supabase.rpc('get_shopping_lists').select();
 
-    log('response: $response');
+    List<ShoppingListsItem> list = ShoppingListsResponse.fromJson(response)
+        .result
+        .map((element) => ShoppingListsItem(
+            id: element.id,
+            createAt: element.createdAt,
+            date: element.date,
+            name: element.name,
+            productsAmount: element.productAmount))
+        .toList();
 
-    return ShoppingLists.fromJson(response);
+    return ShoppingLists(list: list);
   }
 
   Future<void> createShoppingList(String name, DateTime date) async {

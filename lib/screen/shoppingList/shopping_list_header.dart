@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paragony/model/model_category.dart';
+import 'package:paragony/model/domain/model_category.dart';
 
 class ShoppingListHeaderWidget extends StatelessWidget {
   final Category category;

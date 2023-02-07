@@ -10,14 +10,4 @@ enum Unit{
 
   const Unit(this.shortName);
   final String shortName;
-
-  static Unit getValue(String name) {
-    for (var unit in Unit.values) {
-      if(unit.name == name){
-        return unit;
-      }
-    }
-
-    return QUANTITY;
-  }
 }

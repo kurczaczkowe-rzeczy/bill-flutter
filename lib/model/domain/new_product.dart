@@ -1,4 +1,4 @@
-import 'package:paragony/model/unit.dart';
+import 'package:paragony/model/domain/unit.dart';
 
 class NewProduct {
   int shoppingListId;
