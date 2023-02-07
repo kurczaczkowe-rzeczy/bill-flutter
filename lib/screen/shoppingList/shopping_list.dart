@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:group_list_view/group_list_view.dart';
 import 'package:paragony/model/domain/model_category.dart';
@@ -6,6 +8,7 @@ import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_header.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_item.dart';
 import 'package:paragony/services/db_service.dart';
+import 'package:paragony/shared/loading.dart';
 
 class ShoppingListWidget extends StatefulWidget {
   const ShoppingListWidget({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   int listId = -1;
 
   void _onProductClicked(int productId) async {
+    log(productId);
     await DBService().toggleProductInCart(productId);
     setState(() => {_list = DBService().getShoppingList(listId)});
   }
@@ -37,6 +41,14 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
         future: _list,
         initialData: ShoppingList(productsGroupByCategory: {}),
         builder: (context, snapshot) {
+          if(!snapshot.hasData){
+            return Container();
+          }
+
+          if(snapshot.connectionState == ConnectionState.waiting){
+            return Loading();
+          }
+
           ShoppingList shoppingList = snapshot.data as ShoppingList;
 
           return Scaffold(
