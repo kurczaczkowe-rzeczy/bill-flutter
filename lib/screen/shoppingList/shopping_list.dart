@@ -42,7 +42,11 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
         initialData: ShoppingList(productsGroupByCategory: {}),
         builder: (context, snapshot) {
           if(!snapshot.hasData){
-            return Container();
+            return Scaffold(
+              body: Center(
+                child: Text('Brak produktów', style: TextStyle(color: Colors.black12),),
+              ),
+            );
           }
 
           if(snapshot.connectionState == ConnectionState.waiting){
