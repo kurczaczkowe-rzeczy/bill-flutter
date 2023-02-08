@@ -4,9 +4,13 @@ import 'package:paragony/model/domain/shopping_item.dart';
 class ShoppingListItemWidget extends StatelessWidget {
   final ShoppingItem item;
   final ValueSetter<int> onPressed;
+  final double essentialLayoutSize;
 
   const ShoppingListItemWidget(
-      {Key? key, required this.item, required this.onPressed})
+      {Key? key,
+      required this.item,
+      required this.onPressed,
+      required this.essentialLayoutSize})
       : super(key: key);
 
   @override
@@ -16,20 +20,37 @@ class ShoppingListItemWidget extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onPressed(item.id),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Checkbox(
-              value: item.inCart,
-              onChanged: (_) => onPressed(item.id),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(4.0))),
+            Container(
+              width: essentialLayoutSize,
+              child: Row(
+                children: [
+                  Checkbox(
+                    value: item.inCart,
+                    onChanged: (_) => onPressed(item.id),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                  ),
+                  Expanded(
+                    child: Text(
+                      item.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: item.inCart ? Colors.black12 : Colors.black,
+                        decoration: item.inCart
+                            ? TextDecoration.lineThrough
+                            : TextDecoration.none,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             Text(
-              item.name,
-              style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  color: item.inCart ? Colors.black12 : Colors.black,
-              decoration: item.inCart ? TextDecoration.lineThrough : TextDecoration.none),
-            ),
+              '${item.quantity} ${item.unit.shortName}',
+              style: TextStyle(color: Colors.black45),
+            )
           ],
         ),
       ),

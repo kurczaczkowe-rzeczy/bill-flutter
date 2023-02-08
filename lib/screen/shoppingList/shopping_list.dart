@@ -37,19 +37,25 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
       setState(() => {_list = DBService().getShoppingList(listId)});
     }
 
+    double essentialShoppingItemLayoutSize =
+        MediaQuery.of(context).size.width * 0.8;
+
     return FutureBuilder(
         future: _list,
         initialData: ShoppingList(productsGroupByCategory: {}),
         builder: (context, snapshot) {
-          if(!snapshot.hasData){
+          if (!snapshot.hasData) {
             return Scaffold(
               body: Center(
-                child: Text('Brak produktów', style: TextStyle(color: Colors.black12),),
+                child: Text(
+                  'Brak produktów',
+                  style: TextStyle(color: Colors.black12),
+                ),
               ),
             );
           }
 
-          if(snapshot.connectionState == ConnectionState.waiting){
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Loading();
           }
 
@@ -67,7 +73,9 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                 ShoppingItem item = shoppingList.productsGroupByCategory.values
                     .toList()[index.section][index.index];
                 return ShoppingListItemWidget(
-                    item: item, onPressed: _onProductClicked);
+                    item: item,
+                    essentialLayoutSize: essentialShoppingItemLayoutSize,
+                    onPressed: _onProductClicked);
               },
               groupHeaderBuilder: (BuildContext context, int section) {
                 Category category =
