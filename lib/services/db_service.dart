@@ -24,12 +24,6 @@ class DBService {
 
   final supabase = Supabase.instance.client;
 
-  Future<List<Category>> getCategories() async {
-    final response = await supabase.rpc('get_categories').select();
-
-    return _convertToListOfCategory(response).toList();
-  }
-
   Future<ShoppingList> getShoppingList(int id) async {
     if (id == -1) {
       return ShoppingList(productsGroupByCategory: {});
@@ -91,11 +85,4 @@ class DBService {
   Future<void> createProduct(NewProduct product) async {
     return await supabase.rpc('create_product', params: product.toJson());
   }
-}
-
-List<Category> _convertToListOfCategory(List<dynamic> response) {
-  return response.map((element) {
-    final elem = element as Map<String, dynamic>;
-    return Category.fromJson(elem);
-  }).toList();
 }

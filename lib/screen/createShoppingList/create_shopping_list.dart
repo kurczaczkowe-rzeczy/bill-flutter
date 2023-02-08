@@ -17,7 +17,6 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
   String _listName = '';
 
   void _onSaveButtonClicked() async {
-    Navigator.pop(context, {'addListComplete': true});
     if (_formKey.currentState?.validate() == true) {
       await DBService()
           .createShoppingList(_listName, dateFormat.parse(dateController.text))
