@@ -5,11 +5,13 @@ import 'package:paragony/model/domain/shopping_item.dart';
 class ShoppingListItemWidget extends StatelessWidget {
   final ShoppingItem item;
   final ValueSetter<int> onPressed;
+  final ValueSetter<int> onRemoveClick;
   final double essentialLayoutSize;
 
   const ShoppingListItemWidget({Key? key,
     required this.item,
     required this.onPressed,
+    required this.onRemoveClick,
     required this.essentialLayoutSize})
       : super(key: key);
 
@@ -70,7 +72,7 @@ class ShoppingListItemWidget extends StatelessWidget {
     return [
       SlidableAction(
         onPressed: (context) {
-          _removeProduct();
+          onRemoveClick(item.id);
         },
         backgroundColor: Colors.red,
         foregroundColor: Colors.white,
@@ -79,6 +81,4 @@ class ShoppingListItemWidget extends StatelessWidget {
       ),
     ];
   }
-
-  void _removeProduct() {}
 }
