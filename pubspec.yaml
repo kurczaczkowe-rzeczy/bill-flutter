@@ -43,6 +43,7 @@ dependencies:
   json_to_dart: ^1.0.5
   json_serializable: ^6.5.4
   build_runner: ^2.3.3
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:
