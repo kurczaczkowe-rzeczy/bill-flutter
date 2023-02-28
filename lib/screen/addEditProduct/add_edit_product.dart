@@ -3,32 +3,29 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
+import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/unit.dart';
 import 'package:paragony/services/db_service.dart';
 import 'package:paragony/shared/category_indicator.dart';
 import 'package:paragony/shared/loading.dart';
 import 'package:paragony/shared/styles.dart';
 
-class AddProductWidget extends StatefulWidget {
-  final VoidCallback onAddSuccess;
-  final int listId;
-
-  const AddProductWidget(
-      {Key? key, required this.onAddSuccess, required this.listId})
-      : super(key: key);
+class AddEditProductWidget extends StatefulWidget {
+  const AddEditProductWidget({Key? key}) : super(key: key);
 
   @override
-  State<AddProductWidget> createState() =>
-      _AddProductWidgetState(onAddSuccess, listId);
+  State<AddEditProductWidget> createState() => _AddEditProductWidgetState();
 }
 
-class _AddProductWidgetState extends State<AddProductWidget> {
+class _AddEditProductWidgetState extends State<AddEditProductWidget> {
   final _formKey = GlobalKey<FormState>();
   final _categoriesList = DBService().getCategories();
-  final VoidCallback callback;
-  final int listId;
+  int _listId = -1;
+  bool _isEdit = false;
 
-  _AddProductWidgetState(this.callback, this.listId);
+  _AddEditProductWidgetState();
+
+  String _toolbarTitle = 'Dodaj nowy produkt';
 
   // form values
   String _name = '';
@@ -36,21 +33,60 @@ class _AddProductWidgetState extends State<AddProductWidget> {
   Unit _unit = Unit.GRAM;
   Category? _category;
 
-  void _onSaveButtonClicked() async {
-    if (_formKey.currentState?.validate() == true) {
-      await DBService()
-          .createProduct(
-          NewProduct(shoppingListId: listId,
-              unit: _unit,
-              productQuantity: _amount,
-              productName: _name,
-              categoryId: _category?.id ?? 1)
-      ).whenComplete(() => callback());
+  void _onAcceptanceButtonClicked() {
+    if (_isEdit) {
+      _onEditButtonClicked();
+    } else {
+      _onAddButtonClicked();
     }
+  }
+
+  void _onAddButtonClicked() async {
+    if (_formKey.currentState?.validate() == true) {
+      await DBService().createProduct(NewProduct(
+          shoppingListId: _listId,
+          unit: _unit,
+          productQuantity: _amount,
+          productName: _name,
+          categoryId: _category?.id ?? 1))
+      .whenComplete(() => _backWithSuccess());
+    }
+  }
+
+  void _onEditButtonClicked() async {
+    if (_formKey.currentState?.validate() == true) {
+      await DBService().createProduct(NewProduct(
+          shoppingListId: _listId,
+          unit: _unit,
+          productQuantity: _amount,
+          productName: _name,
+          categoryId: _category?.id ?? 1))
+      .whenComplete(() => _backWithSuccess());
+    }
+  }
+
+  void _backWithSuccess(){
+    Navigator.pop(context, {'addEditProduct': true});
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_listId == -1) {
+      Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+      _listId = arguments['listId'] as int;
+      ShoppingItem? item = arguments['product'] as ShoppingItem?;
+      Category? category = arguments['category'] as Category?;
+
+      _isEdit = item != null;
+      _name = item?.name ?? _name;
+      _amount = item?.quantity as double? ?? _amount;
+      _unit = item?.unit ?? _unit;
+      _category = category;
+    }
+    if (_isEdit) {
+      _toolbarTitle = 'Edytuj produkt';
+    }
+
     return FutureBuilder(
         initialData: [],
         future: _categoriesList,
@@ -63,7 +99,14 @@ class _AddProductWidgetState extends State<AddProductWidget> {
               {
                 List<Category> categories = snapshot.data as List<Category>;
                 _category = _category ?? categories.first;
-                return _addProductToList(categories);
+                return Scaffold(
+                    appBar: AppBar(
+                      title: Text(_toolbarTitle),
+                    ),
+                    body: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      child: _formProduct(categories, _onAcceptanceButtonClicked),
+                    ));
               }
             default:
               {
@@ -77,7 +120,10 @@ class _AddProductWidgetState extends State<AddProductWidget> {
     return Text('Nie można pobrać danych', style: TextStyle(color: Colors.red));
   }
 
-  Widget _addProductToList(List<Category> categories) {
+  Widget _formProduct(
+    List<Category> categories,
+    VoidCallback onAcceptButtonClicked,
+  ) {
     return Form(
         key: _formKey,
         child: Column(
@@ -130,7 +176,8 @@ class _AddProductWidgetState extends State<AddProductWidget> {
                   child: DropdownButtonFormField(
                     value: _category,
                     items: _getCategoryList(categories),
-                    onChanged: (value) => setState(() => _category = value as Category),
+                    onChanged: (value) =>
+                        setState(() => _category = value as Category),
                     decoration: textInputDecoration.copyWith(
                         labelText: 'Nazwa kategoria'),
                   ),
@@ -139,7 +186,7 @@ class _AddProductWidgetState extends State<AddProductWidget> {
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-                onPressed: _onSaveButtonClicked, child: Text('Zapisz'))
+                onPressed: onAcceptButtonClicked, child: Text('Zapisz'))
           ],
         ));
   }

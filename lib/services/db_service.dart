@@ -92,6 +92,10 @@ class DBService {
         params: {'product_id': productId, 'shopping_list_id': listId});
   }
 
+  Future<void> editProduct() {
+    return Future.value();
+  }
+
   Future<List<Category>> getCategories() async {
     final response = await supabase.rpc('get_categories').select();
 

@@ -6,12 +6,14 @@ class ShoppingListItemWidget extends StatelessWidget {
   final ShoppingItem item;
   final ValueSetter<int> onPressed;
   final ValueSetter<int> onRemoveClick;
+  final ValueSetter<ShoppingItem> onEditClick;
   final double essentialLayoutSize;
 
   const ShoppingListItemWidget({Key? key,
     required this.item,
     required this.onPressed,
     required this.onRemoveClick,
+    required this.onEditClick,
     required this.essentialLayoutSize})
       : super(key: key);
 
@@ -78,6 +80,15 @@ class ShoppingListItemWidget extends StatelessWidget {
         foregroundColor: Colors.white,
         icon: Icons.delete_outline,
         label: 'Usuń',
+      ),
+      SlidableAction(
+        onPressed: (context) {
+          onEditClick(item);
+        },
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        icon: Icons.edit_outlined,
+        label: 'Edytuj',
       ),
     ];
   }
