@@ -87,6 +87,11 @@ class DBService {
     return await supabase.rpc('create_product', params: product.toJson());
   }
 
+  Future<void> removeProduct(int productId, int listId) async {
+    return await supabase.rpc('remove_product_from_shopping_list',
+        params: {'product_id': productId, 'shopping_list_id': listId});
+  }
+
   Future<List<Category>> getCategories() async {
     final response = await supabase.rpc('get_categories').select();
 

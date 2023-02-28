@@ -24,8 +24,12 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   int listId = -1;
 
   void _onProductClicked(int productId) async {
-    log(productId);
     await DBService().toggleProductInCart(productId);
+    setState(() => {_list = DBService().getShoppingList(listId)});
+  }
+
+  void _onProductRemoveClicked(int productId) async {
+    await DBService().removeProduct(productId, listId);
     setState(() => {_list = DBService().getShoppingList(listId)});
   }
 
@@ -61,9 +65,9 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                   ),
                   SizedBox(height: 50.0),
                   Text(
-                      'Brak produktów',
-                      style: TextStyle(color: Colors.black12),
-                    ),
+                    'Brak produktów',
+                    style: TextStyle(color: Colors.black12),
+                  ),
                 ],
               ),
             );
@@ -99,9 +103,11 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                           .productsGroupByCategory.values
                           .toList()[index.section][index.index];
                       return ShoppingListItemWidget(
-                          item: item,
-                          essentialLayoutSize: essentialShoppingItemLayoutSize,
-                          onPressed: _onProductClicked);
+                        item: item,
+                        essentialLayoutSize: essentialShoppingItemLayoutSize,
+                        onPressed: _onProductClicked,
+                        onRemoveClick: _onProductRemoveClicked,
+                      );
                     },
                     groupHeaderBuilder: (BuildContext context, int section) {
                       Category category = shoppingList
