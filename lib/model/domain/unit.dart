@@ -11,3 +11,7 @@ enum Unit{
   const Unit(this.shortName);
   final String shortName;
 }
+
+Unit? getUnitByName(String? name) {
+  return name == null ? null : Unit.values.firstWhere((element) => element.shortName == name);
+}
