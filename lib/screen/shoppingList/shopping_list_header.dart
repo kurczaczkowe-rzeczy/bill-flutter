@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/model_category.dart';
+import 'package:paragony/shared/category_indicator.dart';
 
 class ShoppingListHeaderWidget extends StatelessWidget {
   final Category category;
@@ -17,14 +18,7 @@ class ShoppingListHeaderWidget extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Container(
-              width: 16.0,
-              height: 16.0,
-              decoration: BoxDecoration(
-                  color: category.color,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(4.0)),
-            ),
+            child: CategoryIndicator(color: category.color),
           ),
           Text(
             category.name,

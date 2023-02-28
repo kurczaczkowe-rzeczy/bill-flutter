@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
+import 'package:paragony/model/dto/category_list_response.dart';
 import 'package:paragony/model/dto/shopping_list_item_response.dart';
 import 'package:paragony/model/dto/shopping_list_response.dart';
 import 'package:paragony/model/dto/shopping_lists_response.dart';
@@ -84,5 +85,15 @@ class DBService {
 
   Future<void> createProduct(NewProduct product) async {
     return await supabase.rpc('create_product', params: product.toJson());
+  }
+
+  Future<List<Category>> getCategories() async {
+    final response = await supabase.rpc('get_categories').select();
+
+    return CategoryListResponse.fromJson(response)
+        .result
+        .map((e) =>
+            Category(id: e.id, name: e.name, color: "#${e.color}".toColor()))
+        .toList();
   }
 }

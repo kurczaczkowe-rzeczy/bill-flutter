@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paragony/services/db_service.dart';
+import 'package:paragony/shared/styles.dart';
 
 class CreateShoppingListWidget extends StatefulWidget {
   const CreateShoppingListWidget({Key? key}) : super(key: key);
 
   @override
-  State<CreateShoppingListWidget> createState() => _CreateShoppingListWidgetState();
+  State<CreateShoppingListWidget> createState() =>
+      _CreateShoppingListWidgetState();
 }
 
 class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
@@ -20,7 +22,8 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
     if (_formKey.currentState?.validate() == true) {
       await DBService()
           .createShoppingList(_listName, dateFormat.parse(dateController.text))
-          .whenComplete(() => Navigator.pop(context, {'addListComplete': true}));
+          .whenComplete(
+              () => Navigator.pop(context, {'addListComplete': true}));
     }
   }
 
@@ -50,11 +53,8 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
             children: [
               TextFormField(
                 initialValue: _listName,
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
-                  labelText: 'Nazwa listy',
-                ),
+                decoration:
+                    textInputDecoration.copyWith(labelText: 'Nazwa listy'),
                 validator: (value) =>
                     value?.isEmpty == true ? 'Musisz podać nazwę listy' : null,
                 onChanged: (value) => setState(() => _listName = value),
@@ -62,12 +62,8 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
               SizedBox(height: 16.0),
               TextFormField(
                 controller: dateController,
-                decoration: InputDecoration(
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
-                  labelText: 'Data ważności listy',
-                  hintText: 'dd-MM-yyyy',
-                ),
+                decoration: textInputDecoration.copyWith(
+                    labelText: 'Data ważności listy', hintText: 'dd-MM-yyyy'),
                 validator: (value) =>
                     value?.isEmpty == true ? 'Musisz podać datę' : null,
                 onTap: _showDatePicker,
