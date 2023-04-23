@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
+import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
 import 'package:paragony/model/domain/shopping_item.dart';
@@ -90,8 +91,8 @@ class DBService {
         params: {'product_id': productId, 'shopping_list_id': listId});
   }
 
-  Future<void> editProduct() {
-    return Future.value();
+  Future<void> editProduct(EditProduct product) async {
+    return await supabase.rpc('edit_product_in_shopping_list', params: product.toJson());
   }
 
   Future<List<Category>> getCategories() async {

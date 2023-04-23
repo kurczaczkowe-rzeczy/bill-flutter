@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
 import 'package:paragony/model/domain/shopping_item.dart';
@@ -22,6 +23,7 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
   final _categoriesList = DBService().getCategories();
   int _listId = -1;
   bool _isEdit = false;
+  int? _productId = null;
 
   _AddEditProductWidgetState();
 
@@ -43,29 +45,32 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
 
   void _onAddButtonClicked() async {
     if (_formKey.currentState?.validate() == true) {
-      await DBService().createProduct(NewProduct(
-          shoppingListId: _listId,
-          unit: _unit,
-          productQuantity: _amount,
-          productName: _name,
-          categoryId: _category?.id ?? 1))
-      .whenComplete(() => _backWithSuccess());
+      await DBService()
+          .createProduct(NewProduct(
+              shoppingListId: _listId,
+              unit: _unit,
+              productQuantity: _amount,
+              productName: _name,
+              categoryId: _category?.id ?? 1))
+          .whenComplete(() => _backWithSuccess());
     }
   }
 
   void _onEditButtonClicked() async {
-    if (_formKey.currentState?.validate() == true) {
-      await DBService().createProduct(NewProduct(
-          shoppingListId: _listId,
-          unit: _unit,
-          productQuantity: _amount,
-          productName: _name,
-          categoryId: _category?.id ?? 1))
-      .whenComplete(() => _backWithSuccess());
+    if (_productId != null && _formKey.currentState?.validate() == true) {
+      await DBService()
+          .editProduct(EditProduct(
+              productId: _productId ?? -1,
+              shoppingListId: _listId,
+              unit: _unit,
+              productQuantity: _amount,
+              productName: _name,
+              categoryId: _category?.id ?? 1))
+          .whenComplete(() => _backWithSuccess());
     }
   }
 
-  void _backWithSuccess(){
+  void _backWithSuccess() {
     Navigator.pop(context, {'addEditProduct': true});
   }
 
@@ -75,9 +80,8 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
       Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
       _listId = arguments['listId'] as int;
       ShoppingItem? item = arguments['product'] as ShoppingItem?;
+      _productId = item?.id;
       Category? category = arguments['category'] as Category?;
-
-      log('category selected on init: ${category?.name}');
 
       _isEdit = item != null;
       _name = item?.name ?? _name;
@@ -100,15 +104,16 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
             case ConnectionState.done:
               {
                 List<Category> categories = snapshot.data as List<Category>;
-                log('category after fetch is null? ${_category == null}');
                 _category = _category ?? categories.first;
                 return Scaffold(
                     appBar: AppBar(
                       title: Text(_toolbarTitle),
                     ),
                     body: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                      child: _formProduct(categories, _onAcceptanceButtonClicked),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 16.0),
+                      child:
+                          _formProduct(categories, _onAcceptanceButtonClicked),
                     ));
               }
             default:
