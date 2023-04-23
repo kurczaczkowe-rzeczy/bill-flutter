@@ -37,9 +37,9 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
   void _onCategoryClicked(int categoryId) {}
 
-  void _onAddEditProductClicked(ShoppingItem? product, Category? category) {
+  void _onAddEditProductClicked(ShoppingItem? product, Category? category) async {
     log('_onAddEditProductClicked');
-    dynamic result = Navigator.pushNamed(
+    dynamic result = await Navigator.pushNamed(
       context,
       Routes.addEditProduct,
       arguments: {

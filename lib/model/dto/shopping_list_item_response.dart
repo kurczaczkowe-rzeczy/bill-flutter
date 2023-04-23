@@ -8,7 +8,7 @@ part 'shopping_list_item_response.g.dart';
 class ShoppingListItemResponse {
   final int id;
   final DateTime createdAt;
-  final int quantity;
+  final double quantity;
   final Unit unit;
   final String name;
   final bool inCart;
