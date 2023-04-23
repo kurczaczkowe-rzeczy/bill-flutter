@@ -31,18 +31,15 @@ class DBService {
         .rpc('get_shopping_list', params: {'shopping_list_id': id});
 
     Map<Category, List<ShoppingItem>> productsGroupByCategory = groupBy(
-        ShoppingListResponse
-            .fromJson(response)
-            .result,
+            ShoppingListResponse.fromJson(response).result,
             (ShoppingListItemResponse response) => response.category.id)
-        .map((key, value) =>
-        MapEntry(
+        .map((key, value) => MapEntry(
             Category(
+                id: value.first.category.id,
                 name: value.first.category.name,
                 color: value.first.category.color.toColor()),
             value
-                .map((element) =>
-                ShoppingItem(
+                .map((element) => ShoppingItem(
                     id: element.id,
                     createAt: element.createdAt,
                     quantity: element.quantity,
@@ -60,11 +57,9 @@ class DBService {
   Future<ShoppingLists> getShoppingLists() async {
     final response = await supabase.rpc('get_shopping_lists').select();
 
-    List<ShoppingListsItem> list = ShoppingListsResponse
-        .fromJson(response)
+    List<ShoppingListsItem> list = ShoppingListsResponse.fromJson(response)
         .result
-        .map((element) =>
-        ShoppingListsItem(
+        .map((element) => ShoppingListsItem(
             id: element.id,
             createAt: element.createdAt,
             date: element.date,
@@ -102,11 +97,10 @@ class DBService {
   Future<List<Category>> getCategories() async {
     final response = await supabase.rpc('get_categories').select();
 
-    return CategoryListResponse
-        .fromJson(response)
+    return CategoryListResponse.fromJson(response)
         .result
         .map((e) =>
-        Category(id: e.id, name: e.name, color: "#${e.color}".toColor()))
+            Category(id: e.id, name: e.name, color: "#${e.color}".toColor()))
         .toList();
   }
 }

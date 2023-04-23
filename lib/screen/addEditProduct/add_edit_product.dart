@@ -77,6 +77,8 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
       ShoppingItem? item = arguments['product'] as ShoppingItem?;
       Category? category = arguments['category'] as Category?;
 
+      log('category selected on init: ${category?.name}');
+
       _isEdit = item != null;
       _name = item?.name ?? _name;
       _amount = item?.quantity as double? ?? _amount;
@@ -98,6 +100,7 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
             case ConnectionState.done:
               {
                 List<Category> categories = snapshot.data as List<Category>;
+                log('category after fetch is null? ${_category == null}');
                 _category = _category ?? categories.first;
                 return Scaffold(
                     appBar: AppBar(
@@ -177,7 +180,7 @@ class _AddEditProductWidgetState extends State<AddEditProductWidget> {
                     value: _category,
                     items: _getCategoryList(categories),
                     onChanged: (value) =>
-                        setState(() => _category = value as Category),
+                        setState(() => _category = value as Category?),
                     decoration: textInputDecoration.copyWith(
                         labelText: 'Nazwa kategoria'),
                   ),

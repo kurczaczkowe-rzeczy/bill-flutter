@@ -38,7 +38,6 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
   void _onCategoryClicked(int categoryId) {}
 
   void _onAddEditProductClicked(ShoppingItem? product, Category? category) async {
-    log('_onAddEditProductClicked');
     dynamic result = await Navigator.pushNamed(
       context,
       Routes.addEditProduct,
@@ -48,10 +47,8 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
         'category': category,
       },
     );
-    log('_onAddEditProductClicked 2');
 
     bool isAddEditProductSuccess = result['addEditProduct'] as bool? ?? false;
-    log('isAddEditProductSuccess: $isAddEditProductSuccess');
 
     if (isAddEditProductSuccess) {
       setState(() => {_list = DBService().getShoppingList(listId)});
