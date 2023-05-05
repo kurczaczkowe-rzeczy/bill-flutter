@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:paragony/screen/addEditProduct/add_edit_product.dart';
 import 'package:paragony/screen/createShoppingList/create_shopping_list.dart';
+import 'package:paragony/screen/recipe/recipe.dart';
 import 'package:paragony/screen/shoppingList/shopping_list.dart';
 import 'package:paragony/screen/shoppingLists/shopping_lists.dart';
 import 'package:paragony/shared/colors.dart';
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
         Routes.createList: (context) => CreateShoppingListWidget(),
         Routes.shoppingList: (context) => MenuWidget(child: ShoppingListWidget()),
         Routes.addEditProduct: (context) => AddEditProductWidget(),
-        Routes.recipe: (context) => CreateShoppingListWidget(),
+        Routes.recipe: (context) => RecipeWidget(),
       },
     );
   }
