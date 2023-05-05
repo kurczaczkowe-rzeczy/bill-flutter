@@ -74,7 +74,6 @@ class _RecipeWidgetState extends State<RecipeWidget> {
   }
 
   void _openUrl(String url) async {
-    log("próba otworzenia url: $url");
     if (!await launchUrl(Uri.parse(url))) {
       log("Nie można otworzyć adresu: $url");
     }
