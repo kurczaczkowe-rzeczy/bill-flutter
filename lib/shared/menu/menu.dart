@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paragony/shared/colors.dart';
+import 'package:paragony/shared/constants.dart';
 
 class MenuWidget extends StatefulWidget {
   final Widget? child;
@@ -54,7 +55,36 @@ class _MenuWidgetState extends State<MenuWidget> {
   }
 
   Widget _menuLayout() {
-    return Container();
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _menuItem(Icons.checklist_outlined, "Lista zakupów", () {
+            setState(() => {_isOpened = false});
+            Navigator.pushNamed(context, Routes.home);
+          }),
+          SizedBox(height: _padding),
+          _menuItem(Icons.bookmark_outline, "Przepisy", () {
+            setState(() => {_isOpened = false});
+            Navigator.pushNamed(context, Routes.recipe);
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _menuItem(IconData icon, String label, void Function() onClick) {
+    return GestureDetector(
+      onTap: onClick,
+      child: Row(
+        children: [
+          Icon(icon, color: textColor),
+          SizedBox(width: _padding),
+          Text(label, style: const TextStyle(color: textColor))
+        ],
+      ),
+    );
   }
 
   Widget _closeIcon() {

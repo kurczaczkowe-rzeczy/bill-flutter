@@ -35,14 +35,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         backgroundColor: background,
-
       ),
       title: 'Paragony',
       routes: {
         Routes.home: (context) => MenuWidget(child: ShoppingListsWidget()),
-        Routes.createList: (context) =>CreateShoppingListWidget(),
+        Routes.createList: (context) => CreateShoppingListWidget(),
         Routes.shoppingList: (context) => MenuWidget(child: ShoppingListWidget()),
         Routes.addEditProduct: (context) => AddEditProductWidget(),
+        Routes.recipe: (context) => CreateShoppingListWidget(),
       },
     );
   }
