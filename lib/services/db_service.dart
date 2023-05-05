@@ -1,18 +1,16 @@
-import 'dart:developer';
-
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
-import 'package:paragony/model/dto/category_list_response.dart';
-import 'package:paragony/model/dto/shopping_list_item_response.dart';
-import 'package:paragony/model/dto/shopping_list_response.dart';
-import 'package:paragony/model/dto/shopping_lists_response.dart';
+import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
 import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/model/domain/shopping_lists.dart';
 import 'package:paragony/model/domain/shopping_lists_item.dart';
-import 'package:paragony/model/domain/unit.dart';
+import 'package:paragony/model/dto/category_list_response.dart';
+import 'package:paragony/model/dto/shopping_list_item_response.dart';
+import 'package:paragony/model/dto/shopping_list_response.dart';
+import 'package:paragony/model/dto/shopping_lists_response.dart';
 import 'package:paragony/shared/extentions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,6 +36,7 @@ class DBService {
             (ShoppingListItemResponse response) => response.category.id)
         .map((key, value) => MapEntry(
             Category(
+                id: value.first.category.id,
                 name: value.first.category.name,
                 color: value.first.category.color.toColor()),
             value
@@ -84,12 +83,16 @@ class DBService {
   }
 
   Future<void> createProduct(NewProduct product) async {
-    return await supabase.rpc('create_product', params: product.toJson());
+    return await supabase.rpc('add_product_to_shopping_list', params: product.toJson());
   }
 
   Future<void> removeProduct(int productId, int listId) async {
     return await supabase.rpc('remove_product_from_shopping_list',
         params: {'product_id': productId, 'shopping_list_id': listId});
+  }
+
+  Future<void> editProduct(EditProduct product) async {
+    return await supabase.rpc('edit_product_in_shopping_list', params: product.toJson());
   }
 
   Future<List<Category>> getCategories() async {

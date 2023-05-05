@@ -11,7 +11,7 @@ ShoppingListItemResponse _$ShoppingListItemResponseFromJson(
     ShoppingListItemResponse(
       json['id'] as int,
       DateTime.parse(json['createdAt'] as String),
-      json['quantity'] as int,
+      (json['quantity'] as num).toDouble(),
       $enumDecode(_$UnitEnumMap, json['unit']),
       json['name'] as String,
       json['inCart'] as bool,

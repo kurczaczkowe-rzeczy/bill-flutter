@@ -5,5 +5,11 @@ class Category{
   String name;
   Color color;
 
-  Category({this.id = 11, this.name = 'Inne', this.color = const Color(0xFF43D1B8)});
+  Category({required this.id, required this.name, required this.color});
+
+  bool operator ==(dynamic other) =>
+      other != null && other is Category && this.id == other.id && this.name == other.name && this.color == other.color;
+
+  @override
+  int get hashCode => super.hashCode;
 }
