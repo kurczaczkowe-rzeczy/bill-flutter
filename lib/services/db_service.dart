@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
+import 'package:paragony/model/domain/edit_list.dart';
 import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
@@ -75,6 +74,15 @@ class DBService {
     return ShoppingLists(list: list);
   }
 
+  Future<void> removeList(int listId) async {
+    return await supabase
+        .rpc('remove_shopping_list', params: {'shopping_list_id': listId});
+  }
+
+  Future<void> editList(EditList list) async {
+    return await supabase.rpc('edit_shopping_list', params: list.toJson());
+  }
+
   Future<void> createShoppingList(String name, DateTime date) async {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     return await supabase.rpc('create_shopping_list',
@@ -87,7 +95,8 @@ class DBService {
   }
 
   Future<void> createProduct(NewProduct product) async {
-    return await supabase.rpc('add_product_to_shopping_list', params: product.toJson());
+    return await supabase.rpc('add_product_to_shopping_list',
+        params: product.toJson());
   }
 
   Future<void> removeProduct(int productId, int listId) async {
@@ -96,7 +105,8 @@ class DBService {
   }
 
   Future<void> editProduct(EditProduct product) async {
-    return await supabase.rpc('edit_product_in_shopping_list', params: product.toJson());
+    return await supabase.rpc('edit_product_in_shopping_list',
+        params: product.toJson());
   }
 
   Future<List<Category>> getCategories() async {
