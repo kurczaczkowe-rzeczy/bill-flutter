@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/screen/categories/category_item.dart';
 import 'package:paragony/services/db_service.dart';
+import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
 
 class CategoriesWidget extends StatefulWidget {
@@ -43,8 +44,8 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                   return CategoryItemWidget(
                     category: category,
                     isPreMade: index < 12,
-                    onEditClick: (item) {},
-                    onRemoveClick: (id) {},
+                    onEditClick: _onEditCategoryClicked,
+                    onRemoveClick: _onCategoryRemoveClick,
                   );
                 });
           },
@@ -56,9 +57,33 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
             width: double.infinity,
             child: FloatingActionButton.extended(
               label: Text('Stwórz kategorię produktów'),
-              onPressed: () {},
+              onPressed: _onCreateCategoryClicked,
             ),
           ),
         ));
+  }
+
+  void _onCreateCategoryClicked() async {
+    dynamic result = await Navigator.pushNamed(context, Routes.addCategory);
+    bool isCreateSuccess = result['addComplete'] as bool;
+
+    if (isCreateSuccess) {
+      setState(() => {_list = DBService().getCategories()});
+    }
+  }
+
+  void _onEditCategoryClicked(Category category) async {
+    dynamic result = await Navigator.pushNamed(context, Routes.editCategory,
+        arguments: {'category': category, 'id': category.id});
+    bool isEditSuccess = result['editComplete'] as bool;
+
+    if (isEditSuccess) {
+      setState(() => {_list = DBService().getCategories()});
+    }
+  }
+
+  void _onCategoryRemoveClick(int categoryId) async {
+    await DBService().removeCategory(categoryId);
+    setState(() => {_list = DBService().getCategories()});
   }
 }
