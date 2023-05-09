@@ -3,4 +3,6 @@ class Routes {
   static const createList = '/createList';
   static const shoppingList = '/shoppingList';
   static const addEditProduct = '/addProduct';
+  static const recipe = '/recipe';
+  static const addRecipe = '/recipe/add';
 }
