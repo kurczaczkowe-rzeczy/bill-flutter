@@ -25,12 +25,27 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
     }
   }
 
+  void _onEditListClick(ShoppingListsItem list) async {
+    dynamic result = await Navigator.pushNamed(context, Routes.createList,
+        arguments: {'list': list, 'listId': list.id});
+    bool isEditSuccess = result['editListComplete'] as bool;
+
+    if (isEditSuccess) {
+      setState(() => {_list = DBService().getShoppingLists()});
+    }
+  }
+
   void _onShoppingListClicked(int listID) {
     Navigator.pushNamed(
       context,
       Routes.shoppingList,
       arguments: listID,
     );
+  }
+
+  void _onListRemoveClick(int listID) async {
+    await DBService().removeList(listID);
+    setState(() => {_list = DBService().getShoppingLists()});
   }
 
   @override
@@ -63,10 +78,13 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
                 itemBuilder: (context, index) {
                   ShoppingListsItem item = list[index];
                   return ShoppingListsItemWidget(
-                      item: item,
-                      onPressed: (listId) {
-                        _onShoppingListClicked(listId);
-                      });
+                    item: item,
+                    onPressed: (listId) {
+                      _onShoppingListClicked(listId);
+                    },
+                    onRemoveClick: _onListRemoveClick,
+                    onEditClick: _onEditListClick,
+                  );
                 }),
           );
         } else {
