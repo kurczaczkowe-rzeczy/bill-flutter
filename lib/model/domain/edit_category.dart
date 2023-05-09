@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:paragony/shared/extentions.dart';
+
 class EditCategory {
   int id;
   String name;
@@ -11,7 +13,7 @@ class EditCategory {
     return {
       'id': id,
       'name': name,
-      'color': color,
+      'color': color.toValue(),
     };
   }
 }

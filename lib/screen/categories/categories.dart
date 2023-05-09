@@ -74,7 +74,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
 
   void _onEditCategoryClicked(Category category) async {
     dynamic result = await Navigator.pushNamed(context, Routes.editCategory,
-        arguments: {'category': category, 'id': category.id});
+        arguments: {'category': category});
     bool isEditSuccess = result['editComplete'] as bool;
 
     if (isEditSuccess) {

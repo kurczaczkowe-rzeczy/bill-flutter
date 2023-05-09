@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:paragony/shared/extentions.dart';
+
 class NewCategory {
   String name;
   Color color;
@@ -9,7 +11,7 @@ class NewCategory {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'color': color,
+      'color': color.toValue(),
     };
   }
 }
