@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:paragony/screen/addEditProduct/add_edit_product.dart';
+import 'package:paragony/screen/categories/categories.dart';
 import 'package:paragony/screen/createShoppingList/create_shopping_list.dart';
 import 'package:paragony/screen/recipe/add_recipe.dart';
 import 'package:paragony/screen/recipe/recipe.dart';
@@ -47,8 +48,7 @@ class MyApp extends StatelessWidget {
         Routes.addEditProduct: (context) => AddEditProductWidget(),
         Routes.recipe: (context) => MenuWidget(child: RecipeWidget()),
         Routes.addRecipe: (context) => AddRecipeWidget(),
-        Routes.categories: (context) =>
-            MenuWidget(child: ShoppingListsWidget()), //todo
+        Routes.categories: (context) => MenuWidget(child: CategoriesWidget()),
       },
     );
   }
