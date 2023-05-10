@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 extension ColorExtension on String {
@@ -7,5 +9,18 @@ extension ColorExtension on String {
     if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
     buffer.write(hexString.replaceFirst('#', ''));
     return Color(int.parse(buffer.toString(), radix: 16));
+  }
+
+  toColorWithHex() {
+    var hexString = this;
+    final buffer = StringBuffer();
+    if (hexString.length == 6 || hexString.length == 7) buffer.write('ff');
+    return Color(int.parse(buffer.toString(), radix: 16));
+  }
+}
+
+extension StringExtension on Color {
+  toValue() {
+    return toString().substring(10, 16);
   }
 }

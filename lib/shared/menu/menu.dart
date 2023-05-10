@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paragony/shared/colors.dart';
-import 'package:paragony/shared/constants.dart';
+import 'package:paragony/shared/menu/menu_list.dart';
 
 class MenuWidget extends StatefulWidget {
   final Widget? child;
@@ -59,17 +59,17 @@ class _MenuWidgetState extends State<MenuWidget> {
       padding: EdgeInsets.symmetric(vertical: 24.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _menuItem(Icons.checklist_outlined, "Lista zakupów", () {
-            setState(() => {_isOpened = false});
-            Navigator.pushNamed(context, Routes.home);
-          }),
-          SizedBox(height: _padding),
-          _menuItem(Icons.bookmark_outline, "Przepisy", () {
-            setState(() => {_isOpened = false});
-            Navigator.pushNamed(context, Routes.recipe);
-          }),
-        ],
+        children: menuList
+            .map((entry) => Column(
+                  children: [
+                    _menuItem(entry.icon, entry.label, () {
+                      setState(() => {_isOpened = false});
+                      Navigator.pushNamed(context, entry.route);
+                    }),
+                    SizedBox(height: _padding)
+                  ],
+                ))
+            .toList(),
       ),
     );
   }

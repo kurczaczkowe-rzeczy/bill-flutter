@@ -1,8 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
+import 'package:paragony/model/domain/edit_category.dart';
 import 'package:paragony/model/domain/edit_list.dart';
 import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
+import 'package:paragony/model/domain/new_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
 import 'package:paragony/model/domain/new_recipe.dart';
 import 'package:paragony/model/domain/recipe.dart';
@@ -117,6 +119,18 @@ class DBService {
         .map((e) =>
             Category(id: e.id, name: e.name, color: "#${e.color}".toColor()))
         .toList();
+  }
+
+  Future<void> removeCategory(int categoryId) async {
+    return await supabase.rpc('remove_category', params: {'id': categoryId});
+  }
+
+  Future<void> editCategory(EditCategory category) async {
+    return await supabase.rpc('edit_category', params: category.toJson());
+  }
+
+  Future<void> createCategory(NewCategory category) async {
+    return await supabase.rpc('create_category', params: category.toJson());
   }
 
   List<Recipe> recipes = [
