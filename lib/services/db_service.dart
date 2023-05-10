@@ -6,8 +6,6 @@ import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
-import 'package:paragony/model/domain/new_recipe.dart';
-import 'package:paragony/model/domain/recipe.dart';
 import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/model/domain/shopping_lists.dart';
@@ -131,23 +129,5 @@ class DBService {
 
   Future<void> createCategory(NewCategory category) async {
     return await supabase.rpc('create_category', params: category.toJson());
-  }
-
-  List<Recipe> recipes = [
-    Recipe(id: 1, name: "Danie 1", url: "https://www.google.com/"),
-    Recipe(id: 2, name: "Danie 2", url: "https://www.google.com/")
-  ];
-
-  Future<List<Recipe>> getRecipes() async {
-    await Future.delayed(Duration(seconds: 1));
-    return recipes;
-  }
-
-  Future<void> addRecipe(NewRecipe recipe) async {
-    await Future.delayed(Duration(seconds: 1));
-
-    recipes.add(Recipe(id: recipes.length, name: recipe.name, url: recipe.url));
-
-    return;
   }
 }

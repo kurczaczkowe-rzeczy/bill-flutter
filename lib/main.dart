@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
         Routes.addEditProduct: (context) => AddEditProductWidget(),
         Routes.recipe: (context) => MenuWidget(child: RecipeWidget()),
         Routes.addRecipe: (context) => AddRecipeWidget(),
+        Routes.editRecipe: (context) => AddRecipeWidget(),
         Routes.categories: (context) => MenuWidget(child: CategoriesWidget()),
         Routes.addCategory: (context) => AddEditCategoryWidget(),
         Routes.editCategory: (context) => AddEditCategoryWidget(),
