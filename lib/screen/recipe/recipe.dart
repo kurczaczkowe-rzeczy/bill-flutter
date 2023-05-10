@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/recipe.dart';
+import 'package:paragony/screen/recipe/recipe_item.dart';
 import 'package:paragony/services/recipes_service.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
@@ -44,9 +45,12 @@ class _RecipeWidgetState extends State<RecipeWidget> {
               itemCount: list.length,
               itemBuilder: (context, index) {
                 Recipe recipe = list[index];
-                return ListTile(
-                  title: Text(recipe.name, style: TextStyle(fontSize: 18.0)),
-                  onTap: () {
+                return RecipeItemWidget(
+                  recipe: recipe,
+                  onEditClick: () {
+                    _onEditRecipeClicked(recipe);
+                  },
+                  onClick: () {
                     _openUrl(recipe.url);
                   },
                 );
@@ -54,7 +58,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _onAddRecipeClicked(),
+        onPressed: _onAddRecipeClicked,
         child: Icon(Icons.add),
       ),
     );
@@ -66,9 +70,20 @@ class _RecipeWidgetState extends State<RecipeWidget> {
       Routes.addRecipe,
     );
 
-    bool isAddRecipeSuccess = result['addRecipe'] as bool? ?? false;
+    bool isSuccess = result['addRecipe'] as bool? ?? false;
 
-    if (isAddRecipeSuccess) {
+    if (isSuccess) {
+      setState(() => {_recipes = RecipeService().getRecipes()});
+    }
+  }
+
+  void _onEditRecipeClicked(Recipe recipe) async {
+    dynamic result = await Navigator.pushNamed(context, Routes.editRecipe,
+        arguments: {'recipe': recipe});
+
+    bool isSuccess = result['editRecipe'] as bool? ?? false;
+
+    if (isSuccess) {
       setState(() => {_recipes = RecipeService().getRecipes()});
     }
   }

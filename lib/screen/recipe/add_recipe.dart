@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:paragony/model/domain/edit_recipe.dart';
 import 'package:paragony/model/domain/new_recipe.dart';
+import 'package:paragony/model/domain/recipe.dart';
 import 'package:paragony/services/recipes_service.dart';
+import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/styles.dart';
 
 class AddRecipeWidget extends StatefulWidget {
@@ -16,10 +19,31 @@ class _AddRecipeWidgetState extends State<AddRecipeWidget> {
   String _name = '';
   String _url = '';
 
+  Recipe? _recipe;
+  int _recipeId = -1;
+  bool _isEdit = false;
+
+  String _toolbarTitle = 'Dodaj przepis';
+
   @override
   Widget build(BuildContext context) {
+    String route = ModalRoute.of(context)?.settings.name ?? "";
+
+    if (route == Routes.editRecipe && _recipeId == -1) {
+      Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+      Recipe recipe = arguments['recipe'] as Recipe;
+
+      _recipe = recipe;
+      _recipeId = _recipe?.id ?? _recipeId;
+      _isEdit = true;
+      _toolbarTitle = 'Edytuj przepis';
+
+      _name = _recipe?.name ?? _name;
+      _url = _recipe?.url ?? _url;
+    }
+
     return Scaffold(
-      appBar: AppBar(title: Text("Dodaj przepis")),
+      appBar: AppBar(title: Text(_toolbarTitle)),
       body: Padding(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: _form(),
@@ -41,26 +65,42 @@ class _AddRecipeWidgetState extends State<AddRecipeWidget> {
           SizedBox(height: 16.0),
           TextFormField(
             initialValue: _url,
-            decoration: textInputDecoration.copyWith(labelText: 'Link do przepis'),
-            validator: (value) => value?.isEmpty == true ? "Musisz podać link do przepisu" : null,
+            decoration:
+                textInputDecoration.copyWith(labelText: 'Link do przepis'),
+            validator: (value) =>
+                value?.isEmpty == true ? "Musisz podać link do przepisu" : null,
             onChanged: (value) => setState(() => _url = value),
           ),
           SizedBox(height: 16.0),
-          ElevatedButton(onPressed: _onAddButtonClicked, child: Text('Zapisz'))
+          ElevatedButton(
+              onPressed: _onAcceptButtonClicked, child: Text('Zapisz'))
         ],
       ),
     );
   }
 
-  void _onAddButtonClicked() async{
-    if(_formKey.currentState?.validate() == true) {
+  void _onAcceptButtonClicked() {
+    if (_isEdit) {
+      _onEditButtonClicked();
+      return;
+    }
+
+    _onAddButtonClicked();
+  }
+
+  void _onAddButtonClicked() async {
+    if (_formKey.currentState?.validate() == true) {
       await RecipeService()
           .addRecipe(NewRecipe(name: _name, url: _url))
-          .whenComplete(() => _backWithSuccess());
+          .whenComplete(() => Navigator.pop(context, {'addRecipe': true}));
     }
   }
 
-  void _backWithSuccess() {
-    Navigator.pop(context, {'addRecipe': true});
+  void _onEditButtonClicked() async {
+    if (_formKey.currentState?.validate() == true) {
+      await RecipeService()
+          .editRecipe(EditRecipe(id: _recipeId, name: _name, url: _url))
+          .whenComplete(() => Navigator.pop(context, {'editRecipe': true}));
+    }
   }
 }
