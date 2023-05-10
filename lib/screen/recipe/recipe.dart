@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/recipe.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/services/recipes_service.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,7 +19,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() => {_recipes = DBService().getRecipes()});
+    setState(() => {_recipes = RecipeService().getRecipes()});
 
     return Scaffold(
       body: FutureBuilder(
@@ -69,7 +69,7 @@ class _RecipeWidgetState extends State<RecipeWidget> {
     bool isAddRecipeSuccess = result['addRecipe'] as bool? ?? false;
 
     if (isAddRecipeSuccess) {
-      setState(() => {_recipes = DBService().getRecipes()});
+      setState(() => {_recipes = RecipeService().getRecipes()});
     }
   }
 

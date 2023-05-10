@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/new_recipe.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/services/recipes_service.dart';
 import 'package:paragony/shared/styles.dart';
 
 class AddRecipeWidget extends StatefulWidget {
@@ -54,7 +54,8 @@ class _AddRecipeWidgetState extends State<AddRecipeWidget> {
 
   void _onAddButtonClicked() async{
     if(_formKey.currentState?.validate() == true) {
-      await DBService().addRecipe(NewRecipe(name: _name, url: _url))
+      await RecipeService()
+          .addRecipe(NewRecipe(name: _name, url: _url))
           .whenComplete(() => _backWithSuccess());
     }
   }
