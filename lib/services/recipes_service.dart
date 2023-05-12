@@ -25,7 +25,7 @@ class RecipeService {
   }
 
   Future<void> addRecipe(NewRecipe recipe) async {
-    return;
+    return await supabase.rpc('get_receipe', params: recipe.toJson());
   }
 
   Future<void> editRecipe(EditRecipe recipe) async {
