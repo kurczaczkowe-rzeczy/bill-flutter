@@ -1,0 +1,29 @@
+name: Release web
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy web build"
+        default: "GitHub Pages"
+        type: string
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Action setup
+        uses: actions/checkout@v3
+      - name: Flutter setup
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build
+        run: flutter build -v web --web-renderer html
+        env:
+          BASE_URL: ${{ env.BASE_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build/web
