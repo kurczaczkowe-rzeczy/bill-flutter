@@ -26,9 +26,25 @@ Future _initEnv() {
 
 Future _initDBClient() {
   return Supabase.initialize(
-    url: dotenv.env['BASE_URL'] ?? '',
-    anonKey: dotenv.env['API_KEY'] ?? '',
+    url: _getDatabaseURLEnv(),
+    anonKey: _getAnonKeyEnv(),
   );
+}
+
+String _getDatabaseURLEnv() {
+  const url = String.fromEnvironment('BASE_URL');
+
+  return url != ''
+    ? url
+    : dotenv.env['BASE_URL'] ?? '';
+}
+
+String _getAnonKeyEnv() {
+  const anonKey = String.fromEnvironment('API_KEY');
+
+  return anonKey != ''
+    ? anonKey
+    : dotenv.env['API_KEY'] ?? '';
 }
 
 class MyApp extends StatelessWidget {

@@ -18,11 +18,10 @@ jobs:
           channel: stable
       - name: Install dependencies
         run: flutter pub get
+      - name: Create empty .env file
+        run: echo "" >> assets/.env
       - name: Build
-        run: flutter build -v web --web-renderer html
-        env:
-          BASE_URL: ${{ env.BASE_URL }}
-          API_KEY: ${{ secrets.API_KEY }}
+        run: flutter build -v web --web-renderer html --dart-define=API_KEY=${{ secrets.API_KEY }} --dart-define=BASE_URL=${{ env.BASE_URL }}
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
