@@ -21,30 +21,21 @@ void main() async {
 }
 
 Future _initEnv() {
+  const anonKey = String.fromEnvironment('API_KEY');
+  const url = String.fromEnvironment('BASE_URL');
+
+  if (anonKey != '' && url != '') {
+    return dotenv.load(mergeWith: { "API_KEY": anonKey, "BASE_URL": url });
+  }
+
   return dotenv.load(fileName: "assets/.env");
 }
 
 Future _initDBClient() {
   return Supabase.initialize(
-    url: _getDatabaseURLEnv(),
-    anonKey: _getAnonKeyEnv(),
+    url: dotenv.env['BASE_URL'] ?? '',
+    anonKey: dotenv.env['API_KEY'] ?? '',
   );
-}
-
-String _getDatabaseURLEnv() {
-  const url = String.fromEnvironment('BASE_URL');
-
-  return url != ''
-    ? url
-    : dotenv.env['BASE_URL'] ?? '';
-}
-
-String _getAnonKeyEnv() {
-  const anonKey = String.fromEnvironment('API_KEY');
-
-  return anonKey != ''
-    ? anonKey
-    : dotenv.env['API_KEY'] ?? '';
 }
 
 class MyApp extends StatelessWidget {
