@@ -12,30 +12,31 @@ import 'package:paragony/shared/colors.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/menu/menu.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'model/domain/environment_config.dart';
 
 void main() async {
-  await _initEnv();
-  await _initDBClient();
+  final envs = await _initEnv();
+  await _initDBClient(envs.databaseURL, envs.anonKey);
 
   runApp(const MyApp());
 }
 
-Future _initEnv() {
+Future<EnvironmentConfig> _initEnv() async {
   const anonKey = String.fromEnvironment('API_KEY');
-  const url = String.fromEnvironment('BASE_URL');
+  const databaseURL = String.fromEnvironment('BASE_URL');
 
-  if (anonKey != '' && url != '') {
-    return dotenv.load(fileName: "assets/.env", mergeWith: { "API_KEY": anonKey, "BASE_URL": url });
+  if (anonKey != '' && databaseURL != '') {
+    return Future.value(EnvironmentConfig(databaseURL: databaseURL, anonKey: anonKey));
   }
 
-  return dotenv.load(fileName: "assets/.env");
+  await dotenv.load(fileName: "assets/.env");
+
+  return Future.value(
+      EnvironmentConfig(databaseURL: dotenv.env['BASE_URL'] ?? '', anonKey: dotenv.env['API_KEY'] ?? ''));
 }
 
-Future _initDBClient() {
-  return Supabase.initialize(
-    url: dotenv.env['BASE_URL'] ?? '',
-    anonKey: dotenv.env['API_KEY'] ?? '',
-  );
+Future _initDBClient(String databaseURL, String anonKey) {
+  return Supabase.initialize(url: databaseURL, anonKey: anonKey);
 }
 
 class MyApp extends StatelessWidget {
@@ -51,8 +52,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.home: (context) => MenuWidget(child: ShoppingListsWidget()),
         Routes.createList: (context) => CreateShoppingListWidget(),
-        Routes.shoppingList: (context) =>
-            MenuWidget(child: ShoppingListWidget()),
+        Routes.shoppingList: (context) => MenuWidget(child: ShoppingListWidget()),
         Routes.addEditProduct: (context) => AddEditProductWidget(),
         Routes.recipe: (context) => MenuWidget(child: RecipeWidget()),
         Routes.addRecipe: (context) => AddRecipeWidget(),
