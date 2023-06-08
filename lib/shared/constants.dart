@@ -9,4 +9,5 @@ class Routes {
   static const categories = '/categories';
   static const addCategory = '/categories/add';
   static const editCategory = '/categories/edit';
+  static const dietWeek = '/diet/week';
 }

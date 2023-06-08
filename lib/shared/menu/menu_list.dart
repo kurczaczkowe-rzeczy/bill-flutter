@@ -12,5 +12,9 @@ List<MenuEntries> menuList = [
       icon: Icons.checklist_outlined,
       route: Routes.categories),
   MenuEntries(
+      label: 'Jadłospis',
+      icon: Icons.fastfood_outlined,
+      route: Routes.dietWeek),
+  MenuEntries(
       label: 'Przepisy', icon: Icons.bookmark_outline, route: Routes.recipe),
 ];

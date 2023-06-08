@@ -4,6 +4,7 @@ import 'package:paragony/screen/addEditProduct/add_edit_product.dart';
 import 'package:paragony/screen/categories/add_edit_category.dart';
 import 'package:paragony/screen/categories/categories.dart';
 import 'package:paragony/screen/createShoppingList/create_shopping_list.dart';
+import 'package:paragony/screen/diet/diet_weekly.dart';
 import 'package:paragony/screen/recipe/add_recipe.dart';
 import 'package:paragony/screen/recipe/recipe.dart';
 import 'package:paragony/screen/shoppingList/shopping_list.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         Routes.categories: (context) => MenuWidget(child: CategoriesWidget()),
         Routes.addCategory: (context) => AddEditCategoryWidget(),
         Routes.editCategory: (context) => AddEditCategoryWidget(),
+        Routes.dietWeek: (context) => MenuWidget(child: DietWeeklyWidget()),
       },
     );
   }
