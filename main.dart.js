@@ -24637,7 +24637,7 @@ return A.L(null,r)}})
 return A.M($async$XX,r)},
 aop(){var s=0,r=A.N(t.mg),q,p,o
 var $async$aop=A.O(function(a,b){if(a===1)return A.K(b,r)
-while(true)switch(s){case 0:A.nZ("databaseURL: ")
+while(true)switch(s){case 0:A.nZ("databaseURL: https://woivvwosjzyyyveuzwuq.supabase.co")
 s=3
 return A.H($.aq7().z8(0,"assets/.env"),$async$aop)
 case 3:p=$.aq7().gSn().h(0,"BASE_URL")
