@@ -21,7 +21,7 @@ jobs:
       - name: Create .env file from default
         run: cp assets/.env.default assets/.env
       - name: Build
-        run: flutter build -v web --web-renderer html --base-href /bill-flutter/ --dart-define=API_KEY=${{ secrets.API_KEY }} --dart-define=BASE_URL=${{ env.BASE_URL }}
+        run: flutter build -v web --web-renderer html --base-href /bill-flutter/ --dart-define=API_KEY=${{ secrets.API_KEY }} --dart-define=BASE_URL=${{ vars.BASE_URL }}
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
