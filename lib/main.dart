@@ -25,7 +25,7 @@ Future _initEnv() {
   const url = String.fromEnvironment('BASE_URL');
 
   if (anonKey != '' && url != '') {
-    return dotenv.load(mergeWith: { "API_KEY": anonKey, "BASE_URL": url });
+    return dotenv.load(fileName: "assets/.env", mergeWith: { "API_KEY": anonKey, "BASE_URL": url });
   }
 
   return dotenv.load(fileName: "assets/.env");
