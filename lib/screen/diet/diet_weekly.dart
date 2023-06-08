@@ -1,8 +1,10 @@
-import 'dart:developer';
-
 import 'package:clean_calendar/clean_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:paragony/shared/colors.dart';
+import 'package:paragony/screen/diet/util.dart';
+import 'package:paragony/services/diet_service.dart';
+import 'package:paragony/shared/error.dart';
+import 'package:paragony/shared/loading.dart';
+import 'package:paragony/shared/styles.dart';
 
 class DietWeeklyWidget extends StatefulWidget {
   const DietWeeklyWidget({Key? key}) : super(key: key);
@@ -12,89 +14,94 @@ class DietWeeklyWidget extends StatefulWidget {
 }
 
 class _DietWeeklyWidgetState extends State<DietWeeklyWidget> {
-  DateTime selectedDay = DateTime(2023, 6, 7);
+  DateTime _selectedDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return _horizontalListView();
+    return Column(
+      children: [
+        _buildCalendar(),
+        _mealsListView(),
+      ],
+    );
   }
 
-  Widget _horizontalListView() {
+  Widget _buildCalendar() {
+    return FutureBuilder(
+      initialData: [],
+      future: DietService().getAllMeals(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return _calendarView([]);
+        }
+
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            {
+              return _calendarView(snapshot.data as List<DateTime>);
+            }
+          default:
+            {
+              return Loading();
+            }
+        }
+      },
+    );
+  }
+
+  Widget _calendarView(List<DateTime> datesForStreaks) {
     return CleanCalendar(
       startWeekday: WeekDay.monday,
       datePickerCalendarView: DatePickerCalendarView.weekView,
-      weekdaysSymbol: const Weekdays(
-          sunday: "Nie",
-          monday: "Pon",
-          tuesday: "Wt",
-          wednesday: "Śr",
-          thursday: "Czw",
-          friday: "Pt",
-          saturday: "Sob"),
-      monthsSymbol: const Months(
-          january: "Styczeń",
-          february: "Luty",
-          march: "Marzec",
-          april: "Kwiecień",
-          may: "Maj",
-          june: "Czerwiec",
-          july: "Lipiec",
-          august: "Sierpień",
-          september: "Wrzesień",
-          october: "Październik",
-          november: "Listopad",
-          december: "Grudzień"),
-      selectedDates: [selectedDay],
+      weekdaysSymbol: weekdaysName,
+      monthsSymbol: monthsName,
+      selectedDates: [_selectedDay],
       onSelectedDates: (date) {
-        log('onSelectedDates $date');
         setState(() {
-          selectedDay = date.first;
+          _selectedDay = date.first;
         });
       },
-      onCalendarViewDate: (date) => log('onCalendarViewDate $date'),
       dateSelectionMode: DatePickerSelectionMode.singleOrMultiple,
-      datesForStreaks: [DateTime(2023, 6, 9)],
-      currentDateProperties: DatesProperties(
-        datesDecoration: DatesDecoration(
-          //today view
-          datesBackgroundColor: accent,
-          datesBorderColor: Colors.transparent,
-          datesTextColor: Colors.white,
-        ),
-      ),
-      selectedDatesProperties: DatesProperties(
-        //selected day
-        datesDecoration: DatesDecoration(
-          //today view
-          datesBackgroundColor: accent.withAlpha(20),
-          datesBorderColor: Colors.transparent,
-          datesTextColor: Colors.black,
-        ),
-      ),
-      generalDatesProperties: DatesProperties(
-        //all days in month
-        datesDecoration: DatesDecoration(
-          datesBackgroundColor: background,
-          datesBorderColor: Colors.transparent,
-          datesTextColor: Colors.black,
-        ),
-      ),
-      // TODO: Change or extend calendar lib. Event with dots!
-      streakDatesProperties: DatesProperties(
-        //days with events
-        datesDecoration: DatesDecoration(
-          datesBackgroundColor: background,
-          datesBorderColor: Colors.transparent,
-          datesTextColor: Colors.green,
-        ),
-      ),
-      leadingTrailingDatesProperties: DatesProperties(
-        //days not in month
-        datesDecoration: DatesDecoration(
-          datesBackgroundColor: background,
-          datesBorderColor: Colors.transparent,
-        ),
-      ),
+      datesForStreaks: datesForStreaks,
+      currentDateProperties: currentDayStyle,
+      selectedDatesProperties: selectedDayStyle,
+      generalDatesProperties: dayStyle,
+      streakDatesProperties: dayEventsStyle,
+      leadingTrailingDatesProperties: dayNotInMonthStyle,
+    );
+  }
+
+  Widget _mealsListView() {
+    return FutureBuilder(
+      initialData: [],
+      future: DietService().getMelasForDay(_selectedDay),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return showError();
+        }
+
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            {
+              List<String> mealsList = snapshot.data as List<String>;
+
+              return ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: mealsList.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(mealsList[index]),
+                      onTap: () {},
+                    );
+                  });
+            }
+          default:
+            {
+              return Container();
+            }
+        }
+      },
     );
   }
 }
