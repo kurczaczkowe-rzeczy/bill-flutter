@@ -3,10 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:group_list_view/group_list_view.dart';
 import 'package:paragony/model/domain/model_category.dart';
-import 'package:paragony/model/domain/new_product.dart';
 import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/shopping_list.dart';
-import 'package:paragony/screen/addEditProduct/add_edit_product.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_header.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_item.dart';
 import 'package:paragony/services/db_service.dart';
@@ -14,16 +12,23 @@ import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
 
 class ShoppingListWidget extends StatefulWidget {
-  const ShoppingListWidget({Key? key}) : super(key: key);
+  final int id;
+  const ShoppingListWidget({Key? key, required this.id}) : super(key: key);
 
   @override
   State<ShoppingListWidget> createState() => _ShoppingListWidgetState();
 }
 
 class _ShoppingListWidgetState extends State<ShoppingListWidget> {
-  Future<ShoppingList> _list =
-  Future.value(ShoppingList(productsGroupByCategory: {}));
+  Future<ShoppingList> _list = Future.value(ShoppingList(productsGroupByCategory: {}));
   int listId = -1;
+
+  @override
+  void initState() {
+    super.initState();
+    listId = widget.id;
+    _list = DBService().getShoppingList(listId);
+  }
 
   void _onProductClicked(int productId) async {
     await DBService().toggleProductInCart(productId);
@@ -57,19 +62,7 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (listId == -1) {
-      listId = ModalRoute
-          .of(context)
-          ?.settings
-          .arguments as int? ?? -1;
-      setState(() => {_list = DBService().getShoppingList(listId)});
-    }
-
-    double essentialShoppingItemLayoutSize =
-        MediaQuery
-            .of(context)
-            .size
-            .width * 0.8;
+    double essentialShoppingItemLayoutSize = MediaQuery.of(context).size.width * 0.8;
 
     return Scaffold(
       body: FutureBuilder(
@@ -93,48 +86,35 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
             return Material(
                 child: Padding(
-                  padding: EdgeInsets.only(top: 16.0),
-                  child: GroupListView(
-                    shrinkWrap: true,
-                    sectionsCount:
-                    shoppingList.productsGroupByCategory.keys.length,
-                    countOfItemInSection: (int section) {
-                      return shoppingList.productsGroupByCategory.values
-                          .toList()[section]
-                          .length;
-                    },
-                    itemBuilder: (context, index) {
-                      ShoppingItem item = shoppingList
-                          .productsGroupByCategory.values
-                          .toList()[index.section][index.index];
-                      Category category = shoppingList.productsGroupByCategory.keys.toList()[index.section];
+              padding: EdgeInsets.only(top: 16.0),
+              child: GroupListView(
+                shrinkWrap: true,
+                sectionsCount: shoppingList.productsGroupByCategory.keys.length,
+                countOfItemInSection: (int section) {
+                  return shoppingList.productsGroupByCategory.values.toList()[section].length;
+                },
+                itemBuilder: (context, index) {
+                  ShoppingItem item = shoppingList.productsGroupByCategory.values.toList()[index.section][index.index];
+                  Category category = shoppingList.productsGroupByCategory.keys.toList()[index.section];
 
-                      return ShoppingListItemWidget(
-                        item: item,
-                        essentialLayoutSize: essentialShoppingItemLayoutSize,
-                        onPressed: _onProductClicked,
-                        onRemoveClick: _onProductRemoveClicked,
-                        onEditClick: (item) {
-                          _onAddEditProductClicked(item, category);
-                        },
-                      );
+                  return ShoppingListItemWidget(
+                    item: item,
+                    essentialLayoutSize: essentialShoppingItemLayoutSize,
+                    onPressed: _onProductClicked,
+                    onRemoveClick: _onProductRemoveClicked,
+                    onEditClick: (item) {
+                      _onAddEditProductClicked(item, category);
                     },
-                    groupHeaderBuilder: (BuildContext context, int section) {
-                      Category category = shoppingList
-                          .productsGroupByCategory.keys
-                          .toList()[section];
-                      return ShoppingListHeaderWidget(
-                          category: category, onPressed: _onCategoryClicked);
-                    },
-                    separatorBuilder: (context, index) =>
-                        Divider(
-                            thickness: 1,
-                            color: Colors.grey.withAlpha(30),
-                            indent: 16,
-                            endIndent: 16),
-                  ),
-                )
-            );
+                  );
+                },
+                groupHeaderBuilder: (BuildContext context, int section) {
+                  Category category = shoppingList.productsGroupByCategory.keys.toList()[section];
+                  return ShoppingListHeaderWidget(category: category, onPressed: _onCategoryClicked);
+                },
+                separatorBuilder: (context, index) =>
+                    Divider(thickness: 1, color: Colors.grey.withAlpha(30), indent: 16, endIndent: 16),
+              ),
+            ));
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onAddEditProductClicked(null, null),
