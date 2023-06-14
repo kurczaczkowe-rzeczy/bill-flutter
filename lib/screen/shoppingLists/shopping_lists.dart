@@ -26,8 +26,8 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
   }
 
   void _onEditListClick(ShoppingListsItem list) async {
-    dynamic result = await Navigator.pushNamed(context, Routes.createList,
-        arguments: {'list': list, 'listId': list.id});
+    dynamic result =
+        await Navigator.pushNamed(context, Routes.createList, arguments: {'list': list, 'listId': list.id});
     bool isEditSuccess = result['editListComplete'] as bool;
 
     if (isEditSuccess) {
@@ -38,7 +38,7 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
   void _onShoppingListClicked(int listID) {
     Navigator.pushNamed(
       context,
-      Routes.shoppingList,
+      "${Routes.shoppingList}/$listID",
       arguments: listID,
     );
   }
@@ -55,14 +55,12 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
       initialData: ShoppingLists(list: []),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('Nie można pobrać danych',
-              style: TextStyle(color: Colors.red));
+          return Text('Nie można pobrać danych', style: TextStyle(color: Colors.red));
         } else if (snapshot.connectionState == ConnectionState.done) {
           List<ShoppingListsItem> list = snapshot.data?.list ?? [];
 
           return Scaffold(
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             floatingActionButton: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
