@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: background,
       ),
       title: 'Paragony',
-      onGenerateRoute: RouteGenerator.onGenerateRoute,
+      onGenerateRoute: onGenerateRoute,
       routes: {
         Routes.home: (context) => MenuWidget(child: ShoppingListsWidget()),
         Routes.createList: (context) => CreateShoppingListWidget(),
