@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paragony/model/domain/edit_list.dart';
@@ -57,11 +59,11 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
-    _listId = arguments['listId'] as int;
+    Map? arguments = ModalRoute.of(context)?.settings?.arguments as Map?;
+    _listId = arguments?['listId'] as int? ?? _listId;
     _isEdit = _listId != -1;
 
-    if (_isEdit) {
+    if (_isEdit && arguments != null) {
       _toolbarTitle = 'Edytuj listę zakupów';
       ShoppingListsItem item = arguments['list'] as ShoppingListsItem;
       _listName = _listName.isEmpty ? item.name : _listName;
@@ -83,9 +85,9 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
               TextFormField(
                 initialValue: _listName,
                 decoration:
-                textInputDecoration.copyWith(labelText: 'Nazwa listy'),
+                    textInputDecoration.copyWith(labelText: 'Nazwa listy'),
                 validator: (value) =>
-                value?.isEmpty == true ? 'Musisz podać nazwę listy' : null,
+                    value?.isEmpty == true ? 'Musisz podać nazwę listy' : null,
                 onChanged: (value) => setState(() => _listName = value),
               ),
               SizedBox(height: 16.0),
@@ -94,7 +96,7 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
                 decoration: textInputDecoration.copyWith(
                     labelText: 'Data ważności listy', hintText: 'dd-MM-yyyy'),
                 validator: (value) =>
-                value?.isEmpty == true ? 'Musisz podać datę' : null,
+                    value?.isEmpty == true ? 'Musisz podać datę' : null,
                 onTap: _showDatePicker,
               ),
               SizedBox(height: 24.0),
