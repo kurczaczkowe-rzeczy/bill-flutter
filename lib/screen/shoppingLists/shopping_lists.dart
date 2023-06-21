@@ -21,11 +21,10 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
       context,
       "${Routes.shoppingList}/${RoutesAddition.create}",
     );
-    // bool isCreateSuccess = result['addListComplete'] as bool;
-    //
-    // if (isCreateSuccess) {
-    //   setState(() => {_list = DBService().getShoppingLists()});
-    // }
+
+    if (mounted) {
+      setState(() => _list = DBService().getShoppingLists());
+    }
   }
 
   void _onEditListClick(ShoppingListsItem list) async {
@@ -34,18 +33,9 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
       "${Routes.shoppingList}/${list.id}/${RoutesAddition.edit}",
     );
 
-    // bool isEditSuccess = result['editListComplete'] as bool;
-    // if (isEditSuccess) {
-    //   setState(() => {_list = DBService().getShoppingLists()});
-    // }
-
-    // dynamic result =
-    //     await Navigator.pushNamed(context, Routes.createList, arguments: {'list': list, 'listId': list.id});
-    // bool isEditSuccess = result['editListComplete'] as bool;
-    //
-    // if (isEditSuccess) {
-    //   setState(() => {_list = DBService().getShoppingLists()});
-    // }
+    if (mounted) {
+      setState(() => _list = DBService().getShoppingLists());
+    }
   }
 
   void _onShoppingListClicked(int listID) {
@@ -58,7 +48,7 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
 
   void _onListRemoveClick(int listID) async {
     await DBService().removeList(listID);
-    setState(() => {_list = DBService().getShoppingLists()});
+    setState(() => _list = DBService().getShoppingLists());
   }
 
   @override

@@ -55,21 +55,27 @@ class _ModifyShoppingListWidgetState extends State<ModifyShoppingListWidget> {
   void _onSaveButtonClicked() async {
     if (_formKey.currentState?.validate() == true) {
       if (_isEdit) {
-        await DBService()
-            .editList(EditList(
-                listId: _listId,
-                name: _listName,
-                date: dateFormat.parse(dateController.text)))
-            .whenComplete(
-                () => Navigator.pop(context, {'editListComplete': true}));
+        _onEditClicked();
         return;
       }
 
-      await DBService()
-          .createShoppingList(_listName, dateFormat.parse(dateController.text))
-          .whenComplete(
-              () => Navigator.pop(context, {'addListComplete': true}));
+      _onAddClicked();
     }
+  }
+
+  void _onAddClicked() {
+    DBService()
+        .createShoppingList(_listName, dateFormat.parse(dateController.text))
+        .whenComplete(() => Navigator.pop(context));
+  }
+
+  void _onEditClicked() {
+    DBService()
+        .editList(EditList(
+            listId: _listId,
+            name: _listName,
+            date: dateFormat.parse(dateController.text)))
+        .whenComplete(() => Navigator.pop(context));
   }
 
   void _showDatePicker() async {
