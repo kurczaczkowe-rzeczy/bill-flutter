@@ -17,21 +17,24 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
   Future<ShoppingLists> _list = DBService().getShoppingLists();
 
   void _onCreateListButtonClicked() async {
-    dynamic result = await Navigator.pushNamed(context, Routes.createList);
-    bool isCreateSuccess = result['addListComplete'] as bool;
+    await Navigator.pushNamed(
+      context,
+      "${Routes.shoppingList}/${RoutesAddition.create}",
+    );
 
-    if (isCreateSuccess) {
-      setState(() => {_list = DBService().getShoppingLists()});
+    if (mounted) {
+      setState(() => _list = DBService().getShoppingLists());
     }
   }
 
   void _onEditListClick(ShoppingListsItem list) async {
-    dynamic result = await Navigator.pushNamed(context, Routes.createList,
-        arguments: {'list': list, 'listId': list.id});
-    bool isEditSuccess = result['editListComplete'] as bool;
+    await Navigator.pushNamed(
+      context,
+      "${Routes.shoppingList}/${list.id}/${RoutesAddition.edit}",
+    );
 
-    if (isEditSuccess) {
-      setState(() => {_list = DBService().getShoppingLists()});
+    if (mounted) {
+      setState(() => _list = DBService().getShoppingLists());
     }
   }
 
@@ -45,7 +48,7 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
 
   void _onListRemoveClick(int listID) async {
     await DBService().removeList(listID);
-    setState(() => {_list = DBService().getShoppingLists()});
+    setState(() => _list = DBService().getShoppingLists());
   }
 
   @override

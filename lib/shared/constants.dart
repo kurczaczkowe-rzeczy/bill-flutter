@@ -1,6 +1,7 @@
 class Routes {
   static const home = '/';
   static const createList = '/createList';
+  static const edit = '/edit';
   static const shoppingList = '/shoppingList';
   static const addEditProduct = '/addProduct';
   static const recipe = '/recipe';
@@ -9,4 +10,9 @@ class Routes {
   static const categories = '/categories';
   static const addCategory = '/categories/add';
   static const editCategory = '/categories/edit';
+}
+
+class RoutesAddition {
+  static const edit = "edit";
+  static const create = "new";
 }
