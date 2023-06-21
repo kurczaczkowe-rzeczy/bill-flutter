@@ -1,29 +1,56 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paragony/model/domain/edit_list.dart';
-import 'package:paragony/model/domain/shopping_lists_item.dart';
 import 'package:paragony/services/db_service.dart';
+import 'package:paragony/shared/loading.dart';
 import 'package:paragony/shared/styles.dart';
 
-class CreateShoppingListWidget extends StatefulWidget {
-  const CreateShoppingListWidget({Key? key}) : super(key: key);
+class ModifyShoppingListWidget extends StatefulWidget {
+  final int? listId;
+
+  const ModifyShoppingListWidget({Key? key, this.listId}) : super(key: key);
 
   @override
-  State<CreateShoppingListWidget> createState() =>
-      _CreateShoppingListWidgetState();
+  State<ModifyShoppingListWidget> createState() =>
+      _ModifyShoppingListWidgetState();
 }
 
-class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
+class _ModifyShoppingListWidgetState extends State<ModifyShoppingListWidget> {
   final _formKey = GlobalKey<FormState>();
   DateFormat dateFormat = DateFormat("dd-MM-yyyy");
   bool _isEdit = false;
-  int _listId = -1;
+  late int _listId;
   String _toolbarTitle = 'Dodaj nową listę zakupów';
 
   TextEditingController dateController = TextEditingController();
   String _listName = '';
+
+  bool _isLoader = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    int? listId = widget.listId;
+
+    if (listId != null) {
+      _isLoader = true;
+      _isEdit = true;
+      _listId = listId;
+      _toolbarTitle = 'Edytuj listę zakupów';
+
+      DBService().getShoppingListInfo(listId).then((list) {
+        setState(() {
+          _isLoader = false;
+
+          _listName = list.name;
+          dateController.text = dateController.text.isEmpty
+              ? dateFormat.format(list.date)
+              : dateController.text;
+        });
+      });
+    }
+  }
 
   void _onSaveButtonClicked() async {
     if (_formKey.currentState?.validate() == true) {
@@ -59,17 +86,8 @@ class _CreateShoppingListWidgetState extends State<CreateShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Map? arguments = ModalRoute.of(context)?.settings?.arguments as Map?;
-    _listId = arguments?['listId'] as int? ?? _listId;
-    _isEdit = _listId != -1;
-
-    if (_isEdit && arguments != null) {
-      _toolbarTitle = 'Edytuj listę zakupów';
-      ShoppingListsItem item = arguments['list'] as ShoppingListsItem;
-      _listName = _listName.isEmpty ? item.name : _listName;
-      dateController.text = dateController.text.isEmpty
-          ? dateFormat.format(item.date)
-          : dateController.text;
+    if (_isLoader) {
+      return Loading();
     }
 
     return Scaffold(

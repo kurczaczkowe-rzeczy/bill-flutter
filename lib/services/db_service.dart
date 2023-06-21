@@ -10,10 +10,13 @@ import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/model/domain/shopping_lists.dart';
 import 'package:paragony/model/domain/shopping_lists_item.dart';
+import 'package:paragony/model/domain/short_shopping_list_info.dart';
 import 'package:paragony/model/dto/category_list_response.dart';
 import 'package:paragony/model/dto/shopping_list_item_response.dart';
 import 'package:paragony/model/dto/shopping_list_response.dart';
 import 'package:paragony/model/dto/shopping_lists_response.dart';
+import 'package:paragony/model/dto/short_shopping_list_info_details_response.dart';
+import 'package:paragony/model/dto/short_shopping_list_info_response.dart';
 import 'package:paragony/shared/extentions.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -72,6 +75,17 @@ class DBService {
         .toList();
 
     return ShoppingLists(list: list);
+  }
+
+  Future<ShortShoppingListInfo> getShoppingListInfo(int listId) async {
+    final response =
+        await supabase.rpc('get_shopping_list_desc', params: {'id': listId});
+
+    ShortShoppingListInfoDetailsResponse list =
+        ShortShoppingListInfoResponse.fromJson(response).result;
+
+    return ShortShoppingListInfo(
+        listId: list.id, name: list.name, date: list.date);
   }
 
   Future<void> removeList(int listId) async {

@@ -17,22 +17,35 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
   Future<ShoppingLists> _list = DBService().getShoppingLists();
 
   void _onCreateListButtonClicked() async {
-    dynamic result = await Navigator.pushNamed(context, Routes.createList);
-    bool isCreateSuccess = result['addListComplete'] as bool;
-
-    if (isCreateSuccess) {
-      setState(() => {_list = DBService().getShoppingLists()});
-    }
+    await Navigator.pushNamed(
+      context,
+      "${Routes.shoppingList}/${RoutesAddition.create}",
+    );
+    // bool isCreateSuccess = result['addListComplete'] as bool;
+    //
+    // if (isCreateSuccess) {
+    //   setState(() => {_list = DBService().getShoppingLists()});
+    // }
   }
 
   void _onEditListClick(ShoppingListsItem list) async {
-    dynamic result =
-        await Navigator.pushNamed(context, Routes.createList, arguments: {'list': list, 'listId': list.id});
-    bool isEditSuccess = result['editListComplete'] as bool;
+    await Navigator.pushNamed(
+      context,
+      "${Routes.shoppingList}/${list.id}/${RoutesAddition.edit}",
+    );
 
-    if (isEditSuccess) {
-      setState(() => {_list = DBService().getShoppingLists()});
-    }
+    // bool isEditSuccess = result['editListComplete'] as bool;
+    // if (isEditSuccess) {
+    //   setState(() => {_list = DBService().getShoppingLists()});
+    // }
+
+    // dynamic result =
+    //     await Navigator.pushNamed(context, Routes.createList, arguments: {'list': list, 'listId': list.id});
+    // bool isEditSuccess = result['editListComplete'] as bool;
+    //
+    // if (isEditSuccess) {
+    //   setState(() => {_list = DBService().getShoppingLists()});
+    // }
   }
 
   void _onShoppingListClicked(int listID) {

@@ -1,6 +1,6 @@
-import 'dart:js_interop';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:paragony/screen/addEditProduct/add_edit_product.dart';
 import 'package:paragony/screen/categories/add_edit_category.dart';
 import 'package:paragony/screen/categories/categories.dart';
@@ -13,8 +13,8 @@ import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/menu/menu.dart';
 import 'package:paragony/shared/route_generator.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
 import 'model/domain/environment_config.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 void main() async {
   final envs = await _initEnv();
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: onGenerateRoute,
       routes: {
         Routes.home: (context) => MenuWidget(child: ShoppingListsWidget()),
-        Routes.createList: (context) => CreateShoppingListWidget(),
+        Routes.createList: (context) => ModifyShoppingListWidget(),
         Routes.addEditProduct: (context) => AddEditProductWidget(),
         Routes.recipe: (context) => MenuWidget(child: RecipeWidget()),
         Routes.addRecipe: (context) => AddRecipeWidget(),
