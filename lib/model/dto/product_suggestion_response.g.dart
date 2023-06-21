@@ -11,7 +11,7 @@ ProductSuggestionResponse _$ProductSuggestionResponseFromJson(
     ProductSuggestionResponse(
       json['id'] as int,
       json['name'] as String,
-      json['color'] as String,
+      $enumDecode(_$UnitEnumMap, json['unit']),
       DateTime.parse(json['createdAt'] as String),
     );
 
@@ -20,6 +20,17 @@ Map<String, dynamic> _$ProductSuggestionResponseToJson(
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'color': instance.color,
+      'unit': _$UnitEnumMap[instance.unit]!,
       'createdAt': instance.createdAt.toIso8601String(),
     };
+
+const _$UnitEnumMap = {
+  Unit.METER: 'METER',
+  Unit.CENTIMETER: 'CENTIMETER',
+  Unit.LITER: 'LITER',
+  Unit.MILLILITER: 'MILLILITER',
+  Unit.KILOGRAM: 'KILOGRAM',
+  Unit.GRAM: 'GRAM',
+  Unit.QUANTITY: 'QUANTITY',
+  Unit.PACK: 'PACK',
+};

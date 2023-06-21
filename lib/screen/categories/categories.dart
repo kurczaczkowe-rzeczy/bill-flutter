@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/screen/categories/category_item.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/services/shopping_list_service.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
 

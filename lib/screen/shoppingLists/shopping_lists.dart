@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:paragony/model/domain/shopping_lists.dart';
 import 'package:paragony/model/domain/shopping_lists_item.dart';
 import 'package:paragony/screen/shoppingLists/shopping_lists_item.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/services/shopping_list_service.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
 
@@ -26,8 +26,8 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
   }
 
   void _onEditListClick(ShoppingListsItem list) async {
-    dynamic result =
-        await Navigator.pushNamed(context, Routes.createList, arguments: {'list': list, 'listId': list.id});
+    dynamic result = await Navigator.pushNamed(context, Routes.createList,
+        arguments: {'list': list, 'listId': list.id});
     bool isEditSuccess = result['editListComplete'] as bool;
 
     if (isEditSuccess) {
@@ -55,12 +55,14 @@ class _ShoppingListsState extends State<ShoppingListsWidget> {
       initialData: ShoppingLists(list: []),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text('Nie można pobrać danych', style: TextStyle(color: Colors.red));
+          return Text('Nie można pobrać danych',
+              style: TextStyle(color: Colors.red));
         } else if (snapshot.connectionState == ConnectionState.done) {
           List<ShoppingListsItem> list = snapshot.data?.list ?? [];
 
           return Scaffold(
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
             floatingActionButton: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(

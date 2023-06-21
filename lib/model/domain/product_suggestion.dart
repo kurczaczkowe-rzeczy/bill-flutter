@@ -1,12 +1,9 @@
+import 'package:paragony/model/domain/unit.dart';
+
 class ProductSuggestion {
   int id;
   String name;
-  String color;
+  Unit unit;
 
-  ProductSuggestion({
-    required this.id,
-    required this.name,
-    required this.color,
-  });
-
+  ProductSuggestion({required this.id, required this.name, required this.unit});
 }
