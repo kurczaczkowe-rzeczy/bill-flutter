@@ -5,7 +5,7 @@ import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 import 'package:paragony/model/domain/edit_category.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_category.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/services/shopping_list_service.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/extentions.dart';
 import 'package:paragony/shared/styles.dart';

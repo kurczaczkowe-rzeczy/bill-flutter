@@ -7,7 +7,7 @@ import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_header.dart';
 import 'package:paragony/screen/shoppingList/shopping_list_item.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/services/shopping_list_service.dart';
 import 'package:paragony/shared/constants.dart';
 import 'package:paragony/shared/loading.dart';
 
@@ -20,7 +20,8 @@ class ShoppingListWidget extends StatefulWidget {
 }
 
 class _ShoppingListWidgetState extends State<ShoppingListWidget> {
-  Future<ShoppingList> _list = Future.value(ShoppingList(productsGroupByCategory: {}));
+  Future<ShoppingList> _list =
+      Future.value(ShoppingList(productsGroupByCategory: {}));
   int listId = -1;
 
   @override
@@ -42,7 +43,8 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
   void _onCategoryClicked(int categoryId) {}
 
-  void _onAddEditProductClicked(ShoppingItem? product, Category? category) async {
+  void _onAddEditProductClicked(
+      ShoppingItem? product, Category? category) async {
     dynamic result = await Navigator.pushNamed(
       context,
       Routes.addEditProduct,
@@ -62,7 +64,8 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double essentialShoppingItemLayoutSize = MediaQuery.of(context).size.width * 0.8;
+    double essentialShoppingItemLayoutSize =
+        MediaQuery.of(context).size.width * 0.8;
 
     return Scaffold(
       body: FutureBuilder(
@@ -91,11 +94,16 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                 shrinkWrap: true,
                 sectionsCount: shoppingList.productsGroupByCategory.keys.length,
                 countOfItemInSection: (int section) {
-                  return shoppingList.productsGroupByCategory.values.toList()[section].length;
+                  return shoppingList.productsGroupByCategory.values
+                      .toList()[section]
+                      .length;
                 },
                 itemBuilder: (context, index) {
-                  ShoppingItem item = shoppingList.productsGroupByCategory.values.toList()[index.section][index.index];
-                  Category category = shoppingList.productsGroupByCategory.keys.toList()[index.section];
+                  ShoppingItem item = shoppingList
+                      .productsGroupByCategory.values
+                      .toList()[index.section][index.index];
+                  Category category = shoppingList.productsGroupByCategory.keys
+                      .toList()[index.section];
 
                   return ShoppingListItemWidget(
                     item: item,
@@ -108,11 +116,16 @@ class _ShoppingListWidgetState extends State<ShoppingListWidget> {
                   );
                 },
                 groupHeaderBuilder: (BuildContext context, int section) {
-                  Category category = shoppingList.productsGroupByCategory.keys.toList()[section];
-                  return ShoppingListHeaderWidget(category: category, onPressed: _onCategoryClicked);
+                  Category category = shoppingList.productsGroupByCategory.keys
+                      .toList()[section];
+                  return ShoppingListHeaderWidget(
+                      category: category, onPressed: _onCategoryClicked);
                 },
-                separatorBuilder: (context, index) =>
-                    Divider(thickness: 1, color: Colors.grey.withAlpha(30), indent: 16, endIndent: 16),
+                separatorBuilder: (context, index) => Divider(
+                    thickness: 1,
+                    color: Colors.grey.withAlpha(30),
+                    indent: 16,
+                    endIndent: 16),
               ),
             ));
           }),

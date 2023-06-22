@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:paragony/model/domain/edit_list.dart';
-import 'package:paragony/services/db_service.dart';
+import 'package:paragony/model/domain/shopping_lists_item.dart';
+import 'package:paragony/services/shopping_list_service.dart';
 import 'package:paragony/shared/loading.dart';
 import 'package:paragony/shared/styles.dart';
 

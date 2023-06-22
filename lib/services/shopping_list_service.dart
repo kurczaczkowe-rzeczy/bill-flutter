@@ -6,12 +6,16 @@ import 'package:paragony/model/domain/edit_product.dart';
 import 'package:paragony/model/domain/model_category.dart';
 import 'package:paragony/model/domain/new_category.dart';
 import 'package:paragony/model/domain/new_product.dart';
+import 'package:paragony/model/domain/product_suggestion.dart';
+import 'package:paragony/model/domain/product_suggestions.dart';
 import 'package:paragony/model/domain/shopping_item.dart';
 import 'package:paragony/model/domain/shopping_list.dart';
 import 'package:paragony/model/domain/shopping_lists.dart';
 import 'package:paragony/model/domain/shopping_lists_item.dart';
 import 'package:paragony/model/domain/short_shopping_list_info.dart';
+import 'package:paragony/model/domain/unit.dart';
 import 'package:paragony/model/dto/category_list_response.dart';
+import 'package:paragony/model/dto/product_suggestion_list_response.dart';
 import 'package:paragony/model/dto/shopping_list_item_response.dart';
 import 'package:paragony/model/dto/shopping_list_response.dart';
 import 'package:paragony/model/dto/shopping_lists_response.dart';
@@ -101,6 +105,20 @@ class DBService {
     DateFormat dateFormat = DateFormat("yyyy-MM-dd");
     return await supabase.rpc('create_shopping_list',
         params: {'name': name, 'date': dateFormat.format(date)});
+  }
+
+  Future<Iterable<ProductSuggestion>> getProductSuggestions(String name,
+      [Unit? unit]) async {
+    final response = await supabase
+        .rpc('get_product_suggestion', params: {'name': name, 'unit': unit});
+
+    return ProductSuggestionListResponse.fromJson(response)
+        .result
+        .map((element) => ProductSuggestion(
+              id: element.id,
+              name: element.name,
+              unit: element.unit,
+            ));
   }
 
   Future<void> toggleProductInCart(int productId) async {
